@@ -8,5 +8,6 @@ obj/
 /wwwroot/node_modules
 
 #Stuff I want ignored
+WebUI/appsetting.json
 UI/appsetting.json
 Notes.txt
