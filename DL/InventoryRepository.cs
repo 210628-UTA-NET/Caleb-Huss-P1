@@ -10,7 +10,7 @@ namespace DL
     {
         private DBContext _context;
         private List<LineItems> _inventory = new List<LineItems>();
-        public InventoryRepository(Entities.DemoDBContext p_context)
+        public InventoryRepository(DBContext p_context)
         {
             _context = p_context;
         }
