@@ -27,11 +27,25 @@ namespace DL
             protected override void OnModelCreating(ModelBuilder p_modelBuilder)
         {
             p_modelBuilder.Entity<Customers>()
-                .Property(cust => cust.CustomerId)
+                .Property(cust => cust.CustomerID)
                 .ValueGeneratedOnAdd();
             p_modelBuilder.Entity<StoreFront>()
                 .Property(store => store.StoreNumber)
                 .ValueGeneratedOnAdd();
+            p_modelBuilder.Entity<LineItems>()
+                .Property(li => li.LineItemID)
+                .ValueGeneratedOnAdd();
+            p_modelBuilder.Entity<Orders>()
+                .Property(order => order.OrderNum)
+                .ValueGeneratedOnAdd();
+            p_modelBuilder.Entity<Products>()
+                .Property(product => product.ProductID)
+                .ValueGeneratedOnAdd();
+            p_modelBuilder.Entity<Categories>()
+                .Property(category => category.CategoryID)
+                .ValueGeneratedOnAdd();
+            p_modelBuilder.Entity<Inventory>()
+                .HasKey(inv => new { inv.Product, inv.Store });
         }
     }
 }

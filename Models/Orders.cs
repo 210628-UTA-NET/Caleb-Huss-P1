@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
-
+using System.ComponentModel.DataAnnotations;
 
 namespace Models
 {
     public class Orders
     {
         private List<LineItems> _itemslist = new List<LineItems>();
-        private double _totalprice;
-        private int _ordernum;
-        public double TotalPrice
+        private decimal _totalprice;
+        public decimal TotalPrice
         {
             get
             {   _totalprice = 0;
@@ -20,28 +19,10 @@ namespace Models
                 return _totalprice;
             }
         }
-        public int OrderNum
-        {
-            get
-            {
-                return _ordernum;
-            }
-            set
-            {
-                _ordernum = value;
-            }
-        }
-        public List<LineItems> ItemsList
-        {
-            get
-            {
-                return _itemslist;
-            }
-            set
-            {
-                _itemslist = value;
-            }
-        }
+        public DateTime Date { get; set; }
+        [Key]
+        public int OrderNum{ get; set; }
+        public List<LineItems> ItemsList{ get; set; }
         public StoreFront StoreFront { get; set; }
         public Customers Customer { get; set; }
         public void AddLineItem(Products p_product, int p_quantity){
