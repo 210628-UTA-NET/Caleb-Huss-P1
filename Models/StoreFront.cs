@@ -12,7 +12,8 @@ namespace Models
         public string State { get; set; }
         [Key]
         public int StoreNumber { get; set; }
-        public List<Inventory> StoreInventory { get; set; }
+        public Inventory StoreInventory { get; set; }
+        public List<Orders> StoreOrders { get; set; }
         
         public override string ToString()
         {

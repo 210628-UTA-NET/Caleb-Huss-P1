@@ -7,7 +7,8 @@ namespace Models
     public class Customers
     {
        
-        public string Name { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
         public string State { get; set; }
@@ -25,7 +26,7 @@ namespace Models
         }
         public override string ToString()
         {
-            return $"Name: {Name}, Phonenumber: {PhoneNumber}, Email: {Email}, CustomerID: {CustomerID}, \nAddress: {Address}, City: {City}, State: {State}";
+            return $"Name: {FirstName} {LastName}, Phonenumber: {PhoneNumber}, Email: {Email}, CustomerID: {CustomerID}, \nAddress: {Address}, City: {City}, State: {State}";
         }
     }
 }
