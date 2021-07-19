@@ -19,18 +19,18 @@ namespace Models
         // public int EmployeeID { get; set; } 
         // public string Password { get; set; }       
 
-        // public bool CheckCreditials(){
-        //     string getHash = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-        //         password: this.Password,
-        //         salt: _salt,
-        //         prf: KeyDerivationPrf.HMACSHA1,
-        //         iterationCount: 10000,
-        //         numBytesRequested: 256 / 8
-        //     ));
-        //     if ((EmployeeID == employeeid) && (getHash == _hash)){
-        //         return true;
-        //     }
-        //     return false;
-        // }
+        public bool CheckCreditials(string p_email, string p_password){
+            string getHash = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: p_password,
+                salt: Convert.FromBase64String(salt),
+                prf: KeyDerivationPrf.HMACSHA1,
+                iterationCount: 10000,
+                numBytesRequested: 256 / 8
+            ));
+            if ((p_email == Customer.Email) && (getHash == hash)){
+                return true;
+            }
+            return false;
+        }
     }
 }
