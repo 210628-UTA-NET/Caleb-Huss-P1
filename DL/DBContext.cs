@@ -20,10 +20,7 @@ namespace DL
         public DBContext(DbContextOptions options) : base(options)
         { }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder p_options)
-        { 
-            p_options.UseSqlServer("Server=tcp:calebhrev.database.windows.net,1433;Initial Catalog=DemoDB;Persist Security Info=False;User ID=CalebHuss;Password=8675CBL!!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=20;");
-        }
+        
             protected override void OnModelCreating(ModelBuilder p_modelBuilder)
         {
             p_modelBuilder.Entity<Customers>()
@@ -45,7 +42,10 @@ namespace DL
                 .Property(category => category.CategoryID)
                 .ValueGeneratedOnAdd();
             p_modelBuilder.Entity<Inventory>()
-                .HasKey(inv => new { inv.Product, inv.Store });
+                .Property(inv => inv.InventoryID)
+                .ValueGeneratedOnAdd();
+            p_modelBuilder.Entity<StoreInventory>()
+                .HasKey(inv => new { inv.ProductID, inv.InventoryID });
         }
     }
 }
