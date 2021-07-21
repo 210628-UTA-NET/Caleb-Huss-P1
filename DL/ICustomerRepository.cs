@@ -27,5 +27,12 @@ namespace DL
         /// <param name="p_cust">This is the customer obj that will be added</param>
         /// <returns>Return the customer added to the db</returns>
         Customers AddCustomer(Customers p_cust);
+
+        /// <summary>
+        /// This method gets the salt and hash for a certain customer
+        /// </summary>
+        /// <param name="p_cust">Customer to get salt and hash</param>
+        /// <returns>returns the salt and hash for that customer</returns>
+        List<String> GetSaltAndHash(Customers p_cust);
     }
 }
