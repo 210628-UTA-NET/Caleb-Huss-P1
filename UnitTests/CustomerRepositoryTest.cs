@@ -40,13 +40,29 @@ namespace UnitTests
             }
             
         }
-        [Fact]
-        public void GetCustomerShouldGetASpecificCustomer()
+        // This test is pretty robust and should check the different combinations when "building" a query
+        [Theory]
+        [InlineData("Caleb","Huss", "caleb.huss@gmail.gov", 7851231234,1)] //Full test
+        [InlineData("Caleb", "Huss", "caleb.huss@gmail.gov", 7851231234,0)] // No customer id
+        [InlineData("Caleb", "Huss", "caleb.huss@gmail.gov", 0,0)] // no id or number
+        [InlineData("Caleb", "Huss", null, 0, 0)] // Just full name. Not really unique but should return one right now 
+        [InlineData(null, "Huss", null, 7851231234, 0)] // Should probably be unique
+        [InlineData(null, null, "caleb.huss@gmail.gov", 0, 0)] // Should be unique
+        public void GetCustomerShouldGetASpecificCustomer(String p_fname, String p_lname, String p_email, long p_phonenumber, int p_custID)
         {
             using(var context = new DBContext(_options))
             {
                 //Arrange
                 ICustomerRepository custRepo = new CustomerRepository(context);
+                Customers custSearch = new Customers()
+                {
+                    FirstName = p_fname,
+                    LastName = p_lname,
+                    Email = p_email,
+                    PhoneNumber = p_phonenumber,
+                    CustomerID = p_custID
+                };
+
                 Customers custToFind = new Customers()
                 {
                     FirstName = "Caleb",
@@ -56,12 +72,11 @@ namespace UnitTests
                     State = "Kansas",
                     Email = "caleb.huss@gmail.gov",
                     PhoneNumber = 7851231234,
-                    CustomerID = 0
+                    CustomerID = 1
                 };
-
                 //Act
-                Customers found = custRepo.GetCustomer(custToFind);
-
+                Customers found = custRepo.GetCustomer(custSearch);
+        
                 //Assert
                 Assert.NotNull(found);
                 Assert.Equal(found.FirstName, custToFind.FirstName);
@@ -126,7 +141,7 @@ namespace UnitTests
                         State = "Kansas",
                         Email = "caleb.huss@gmail.gov",
                         PhoneNumber = 7851231234,
-                        CustomerID = 0
+                        CustomerID = 1
                     },
                     new Customers
                     {
