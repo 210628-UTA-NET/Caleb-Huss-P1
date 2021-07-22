@@ -33,27 +33,16 @@ namespace DL
 
         public StoreFront GetStore(StoreFront p_store)
         {
-            throw new NotImplementedException();
-            //var query = _context.Stores.AsQueryable();
-            //if (!String.IsNullOrWhiteSpace(p_store.Name))
-            //{
-            //    query = query.Where(a => a.Name == p_store.Name); 
-            //}
-            //if (p_store.StoreNumber > 0)
-            //{
-            //    query = query.Where(a => a.StoreNumber == p_store.StoreNumber);
-            //} 
-            //return query.Select(
-            //    store => 
-            //        new StoreFront()
-            //        {
-            //            StoreNumber = store.StoreNumber,
-            //            Name = store.Name,
-            //            Address = store.Address,
-            //            City = store.City,
-            //            State = store.State,
-            //        }
-            //).FirstOrDefault();
+            var query = _context.Stores.AsQueryable();
+            if (!String.IsNullOrWhiteSpace(p_store.Name))
+            {
+               query = query.Where(a => a.Name == p_store.Name); 
+            }
+            if (p_store.StoreNumber > 0)
+            {
+               query = query.Where(a => a.StoreNumber == p_store.StoreNumber);
+            } 
+            return query.FirstOrDefault();
         }
     }
 }
