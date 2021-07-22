@@ -74,6 +74,36 @@ namespace UnitTests
             }    
         }
 
+        [Fact]
+        public void AddStoreShouldAddStore()
+        {
+            using (var context = new DBContext(_options))
+            {
+                //Arrange
+                IStoreRepository storeRepo = new StoreRepository(context);
+                StoreFront newStore = new StoreFront()
+                {
+                    Name = "StoreTest",
+                    Address = "123 321 main st2",
+                    City = "Louisville",
+                    State = "Georgia",
+                    StoreNumber = 100
+                };
+                StoreFront foundStore;
+                //Act
+                storeRepo.AddStore(newStore);
+                context.SaveChanges();
+                foundStore = storeRepo.GetStore(newStore);
+
+                //Assert
+                Assert.NotNull(foundStore);
+                Assert.Equal(newStore.Name, foundStore.Name);
+                Assert.Equal(newStore.Address, foundStore.Address);
+                Assert.Equal(newStore.City, foundStore.City);
+                Assert.Equal(newStore.State, foundStore.State);
+                Assert.Equal(newStore.StoreNumber, foundStore.StoreNumber);
+            }
+        }
 
         private void Seed()
         {

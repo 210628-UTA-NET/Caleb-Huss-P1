@@ -147,8 +147,7 @@ namespace UnitTests
                     CustomerID = 100
                 };
                 //Act
-                context.Customers.Add(newCustomer);
-                context.SaveChanges();
+                custRepo.AddCustomer(newCustomer);
                 Customers found = custRepo.GetCustomer(newCustomer);
 
                 //Assert
