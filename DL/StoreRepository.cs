@@ -14,15 +14,8 @@ namespace DL
         }
         public StoreFront AddStore(StoreFront p_store)
         {
-            //_context.Stores.Add(new Entities.Store
-            //{
-            //    StoreNumber = p_store.StoreNumber,
-            //    Address = p_store.Address,
-            //    City = p_store.City,
-            //    State = p_store.State,
-            //    Name = p_store.Name
-            //});
-            //_context.SaveChanges();
+            _context.Stores.Add(p_store);
+            _context.SaveChanges();
             return p_store;
         }
 

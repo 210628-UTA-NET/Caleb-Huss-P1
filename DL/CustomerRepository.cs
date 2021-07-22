@@ -34,8 +34,6 @@ namespace DL
                custsFound.Add(found);
                return custsFound;
             }
-            Console.WriteLine(p_cust.City);
-            Console.WriteLine(p_cust.State);
             var query = _context.Customers.AsQueryable();
 
             if (!String.IsNullOrWhiteSpace(p_cust.FirstName))
@@ -62,7 +60,6 @@ namespace DL
             {
                query = query.Where(a => a.Address == p_cust.Address);
             }
-            
             if (p_cust.PhoneNumber != 0)
             {
                query = query.Where(a => a.PhoneNumber == p_cust.PhoneNumber);
