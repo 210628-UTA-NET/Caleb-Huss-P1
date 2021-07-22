@@ -36,14 +36,43 @@ namespace UnitTests
             }
         }
 
+        [Theory]
+        [InlineData(1,null)]
+        [InlineData(0,"StorePlace1")]
+        public void GetStoreGetsAStore(int p_storeID, string p_name)
+        {
+            using (var context = new DBContext(_options))
+            {
+                //Arrange
+                IStoreRepository storeRepo = new StoreRepository(context);
+                StoreFront storeToFind = new StoreFront () //This is the store being searched for
+                {
+                    Name = "StorePlace1",
+                    Address = "123321 Road st",
+                    City = "Kansas City",
+                    State = "Florida",
+                    StoreNumber = 1
+                };
 
+                StoreFront searchStore = new StoreFront()// applying the search parameters
+                {
+                    Name = p_name,
+                    StoreNumber = p_storeID 
+                };
+                StoreFront foundStore;
+                //Act
 
+                foundStore = storeRepo.GetStore(searchStore);
 
-
-
-
-
-
+                //Assert
+                Assert.NotNull(foundStore);
+                Assert.Equal(storeToFind.Name , foundStore.Name);
+                Assert.Equal(storeToFind.Address, foundStore.Address);
+                Assert.Equal(storeToFind.City, foundStore.City);
+                Assert.Equal(storeToFind.State, foundStore.State);
+                Assert.Equal(storeToFind.StoreNumber, foundStore.StoreNumber);
+            }    
+        }
 
 
         private void Seed()

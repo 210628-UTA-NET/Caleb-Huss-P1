@@ -125,8 +125,7 @@ namespace UnitTests
                 //Assert
                 Assert.NotNull(foundCusts);
                 Assert.Equal(p_expected, foundCusts.Count);
-            }
-                
+            }       
         }
 
         [Fact]
