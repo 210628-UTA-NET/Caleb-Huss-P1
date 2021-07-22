@@ -28,19 +28,7 @@ namespace DL
 
         public List<StoreFront> GetAllStores()
         {
-
-            throw new NotImplementedException();
-            //return _context.Stores.Select(
-            //    stores =>
-            //        new StoreFront()
-            //        {
-            //            StoreNumber = stores.StoreNumber,
-            //            Address = stores.Address,
-            //            City = stores.City,
-            //            State = stores.State,
-            //            Name = stores.Name
-            //        }
-            //).ToList();
+            return _context.Stores.ToList();
         }
 
         public StoreFront GetStore(StoreFront p_store)

@@ -30,7 +30,6 @@ namespace UnitTests
                 ICustomerRepository custRepo = new CustomerRepository(context);
                 List<Customers> Customers;
 
-
                 //Act
                 Customers = custRepo.GetAllCustomers();
 
