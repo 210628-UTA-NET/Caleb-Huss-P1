@@ -1,13 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DL;
-using Models;
 using Microsoft.EntityFrameworkCore;
+using Models;
 using Xunit;
-using System.Collections;
 
 namespace UnitTests
 {
@@ -36,7 +36,7 @@ namespace UnitTests
 
                 //Assert
                 Assert.NotNull(Customers);
-                Assert.Equal(3,Customers.Count); // Should also assert and check if the whole thing is there.
+                Assert.Equal(5,Customers.Count); // Should also assert and check if the whole thing is there.
             }
             
         }
@@ -79,6 +79,7 @@ namespace UnitTests
         
                 //Assert
                 Assert.NotNull(found);
+                // I realize these are backwords and is fixed in other tests
                 Assert.Equal(found.FirstName, custToFind.FirstName);
                 Assert.Equal(found.LastName, custToFind.LastName);
                 Assert.Equal(found.Address, custToFind.Address);
@@ -89,6 +90,46 @@ namespace UnitTests
                 Assert.Equal(found.CustomerID, custToFind.CustomerID);
             }
         }
+
+        //Another pretty robust test but obviously doesnt test every combo
+        //By my calculations that would be over 40000 tests
+        [Theory]
+        [InlineData("Caleb", "Huss", "caleb.huss@gmail.gov", 7851231234, 1, "123 main st","Kansas","Kansas City",1)]//full test
+        [InlineData("Caleb", null, null, 0, 0, null, null, null, 2)] // look for Caleb's
+        [InlineData(null, "Huss", null, 0, 0, null, null, null, 2)] // look for Huss's
+        [InlineData("Caleb", "Huss", null, 0, 0, null, null, null, 1)] // look for Caleb Huss's
+        [InlineData(null, null, null, 0, 0, null, "Kansas", null, 3)] // People in Kansas
+        [InlineData(null, null, null, 0, 0, null, "Kansas", "Kansas City", 2)] // People in kansas city, kansas
+        [InlineData(null, null, null, 0, 0, null, null, "Kansas City", 2)]
+        public void GetCertainCustomersShouldGetCertainCustomers(String p_fname, String p_lname, String p_email, long p_phonenumber, int p_custID, String p_address, String p_state, String p_city,int p_expected)
+        {
+            using (var context = new DBContext(_options))
+            {
+                //Arrange
+                ICustomerRepository custRepo = new CustomerRepository(context);
+                Customers custSearch = new Customers()
+                {
+                    FirstName = p_fname,
+                    LastName = p_lname,
+                    Email = p_email,
+                    PhoneNumber = p_phonenumber,
+                    CustomerID = p_custID,
+                    Address = p_address,
+                    State = p_state,
+                    City = p_city
+                };
+                List<Customers> foundCusts;
+                //Act
+                
+                foundCusts = custRepo.GetCertainCustomers(custSearch);
+
+                //Assert
+                Assert.NotNull(foundCusts);
+                Assert.Equal(p_expected, foundCusts.Count);
+            }
+                
+        }
+
         [Fact]
         public void AddCustomerShouldAddCustomer()
         {
@@ -145,6 +186,28 @@ namespace UnitTests
                     },
                     new Customers
                     {
+                        FirstName = "Caleb",
+                        LastName = "Buss",
+                        Address = "45554 E Stree Roud",
+                        City = "La City",
+                        State = "Kansas",
+                        Email = "caleb.buss@gmail.gov",
+                        PhoneNumber = 1235559762,
+                        CustomerID = 2
+                    },
+                    new Customers
+                    {
+                        FirstName = "Rueb",
+                        LastName = "Huss",
+                        Address = "9658 SW east Way",
+                        City = "Kansas City",
+                        State = "Kansas",
+                        Email = "rueb.huss@gmail.gov",
+                        PhoneNumber = 2596453825,
+                        CustomerID = 3
+                    },
+                    new Customers
+                    {
                     
                         FirstName = "Tyler",
                         LastName = "Jay",
@@ -152,7 +215,8 @@ namespace UnitTests
                         City = "Jamestown",
                         State = "Ohio",
                         Email = "TJ332@gmail.com",
-                        PhoneNumber = 7778546845
+                        PhoneNumber = 7778546845,
+                        CustomerID = 10
                     },
                     new Customers
                     {
@@ -162,7 +226,8 @@ namespace UnitTests
                         City = "Veil",
                         State = "Florida",
                         Email = "BailMill@yahoo.com",
-                        PhoneNumber = 8679511234
+                        PhoneNumber = 8679511234,
+                        CustomerID = 11
                     });
                 context.SaveChanges();
             }

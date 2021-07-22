@@ -26,6 +26,52 @@ namespace DL
             return _context.Customers.ToList();
         }
 
+        public List<Customers> GetCertainCustomers(Customers p_cust)
+        {
+            List<Customers> custsFound = new List<Customers>();
+            if (p_cust.CustomerID != 0)
+            {   Customers found = _context.Customers.Find(p_cust.CustomerID);
+               custsFound.Add(found);
+               return custsFound;
+            }
+            Console.WriteLine(p_cust.City);
+            Console.WriteLine(p_cust.State);
+            var query = _context.Customers.AsQueryable();
+
+            if (!String.IsNullOrWhiteSpace(p_cust.FirstName))
+            {
+               query = query.Where(a => a.FirstName == p_cust.FirstName);
+            }
+            if (!String.IsNullOrWhiteSpace(p_cust.LastName))
+            {
+               query = query.Where(a => a.LastName == p_cust.LastName);
+            }
+            if (!String.IsNullOrWhiteSpace(p_cust.Email))
+            {
+               query = query.Where(a => a.Email == p_cust.Email);
+            }
+            if(!String.IsNullOrWhiteSpace(p_cust.City))
+            {
+                query = query.Where(a => a.City == p_cust.City);
+            }
+            if(!String.IsNullOrWhiteSpace(p_cust.State))
+            {
+               query = query.Where(a => a.State == p_cust.State);
+            }
+            if(!String.IsNullOrWhiteSpace(p_cust.Address))
+            {
+               query = query.Where(a => a.Address == p_cust.Address);
+            }
+            
+            if (p_cust.PhoneNumber != 0)
+            {
+               query = query.Where(a => a.PhoneNumber == p_cust.PhoneNumber);
+            }
+            
+            custsFound = query.ToList();
+            return custsFound;
+        }
+
         public Customers GetCustomer(Customers p_cust)
         {
             //If provided the customer ID just return the customer associated with that ID.

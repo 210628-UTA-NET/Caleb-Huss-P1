@@ -22,6 +22,12 @@ namespace DL
         /// <returns>Returns the spceific customer</returns>
         Customers GetCustomer(Customers p_cust);
         /// <summary>
+        /// Will get a list of customers based on search parameters
+        /// </summary>
+        /// <param name="p_cust">Search parameters wrapped in csutomer form</param>
+        /// <returns>List of customers searched for</returns>
+        List<Customers> GetCertainCustomers(Customers p_cust);
+        /// <summary>
         /// This adds a customer to the db.
         /// </summary>
         /// <param name="p_cust">This is the customer obj that will be added</param>
