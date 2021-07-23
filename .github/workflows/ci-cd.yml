@@ -26,7 +26,7 @@ jobs:
     - name: sonarscan-dotnet
       uses: highbyte/sonarscan-dotnet@v2.1.1-beta
       with:
-        sonarProjectKey: 210628-UTA-NET-Caleb-Huss-P1
+        sonarProjectKey: 210628-UTA-NET_Caleb-Huss-P1
         sonarProjectName: Caleb-Huss-P1
         sonarOrganization: 210628-uta-net
         dotnetDisableTests: true
