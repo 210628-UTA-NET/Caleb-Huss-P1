@@ -11,6 +11,7 @@ using Xunit;
 
 namespace UnitTests
 {
+    [Collection("Sequential")]
     public class CustomerRepositoryTest
     {
         private readonly DbContextOptions<DBContext> _options;
