@@ -36,41 +36,15 @@ namespace DL
 
         public List<LineItems> GetAllInventory(StoreFront p_store)
         {
-
-            throw new NotImplementedException();
-            // Get invertory of a certain store
-            //var _storeInventory = (from i in _context.Inventories
-            //                           join p in _context.Products on i.ProductId equals p.ProductId
-            //                           where i.StoreNumber == p_store.StoreNumber
-            //                           select new
-            //                           {  //map query to variables and create a list
-            //                               StoreNumber = i.StoreNumber,
-            //                               Quantity = i.Quantity,
-            //                               ProductName = p.Name,
-            //                               Price = p.Price,
-            //                               Description = p.Description,
-            //                               Category = p.Category,
-            //                               ProductID = p.ProductId
-            //                           }).ToList();
-            //    // takes mapped query and applies them to lineitem models
-            //    foreach (var item in _storeInventory)
-            //    {
-            //        LineItems _lineitem = new LineItems();
-            //        _lineitem.Quantity = (int)item.Quantity;
-            //        Products _item = new Products()
-            //        {
-            //            Name = item.ProductName,
-            //            Price = (float)item.Price,
-            //            Description = item.Description,
-            //            Category = item.Category,
-            //            ProductID = item.ProductID
-            //        };
-            //        _lineitem.Product = _item;
-            //        _inventory.Add(_lineitem);
-            //    }
-
-            //    return _inventory;
-            
+            List<LineItems> storeInventory = new List<LineItems>() ;
+            storeInventory = (from sInv in _context.StoreInventories
+                                select new LineItems
+                                {
+                                    Product = sInv.Product,
+                                    Quantity = sInv.Quantity
+                                }
+            ).ToList();
+            return storeInventory;
         }
 
         public List<LineItems> GetSearchedInventory(StoreFront p_store, Products p_product)

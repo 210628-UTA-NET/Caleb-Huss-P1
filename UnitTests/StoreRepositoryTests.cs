@@ -10,6 +10,7 @@ using DL;
 
 namespace UnitTests
 {
+    [Collection("Sequential")]
     public class StoreRepositoryTests
     {
         private readonly DbContextOptions<DBContext> _options;

@@ -14,12 +14,12 @@ namespace DL
         public DbSet<Customers> Customers { get; set; }
 
         public DbSet<StoreFront> Stores { get; set; }
-        public DbSet<Inventory> Inventory { get; set; }
+        public DbSet<Inventory> Inventories { get; set; }
         public DbSet<Categories> Categories { get; set; }
         public DbSet<LineItems> LineItems { get; set; }
         public DbSet<Orders> Orders { get; set; }
         public DbSet<Products> Products { get; set; }
-        public DbSet<StoreInventory> StoreInventory { get; set; }
+        public DbSet<StoreInventory> StoreInventories { get; set; }
         public DbSet<UserLogin> UserLogin { get; set; }
         public DBContext() : base()
         { }
