@@ -17,8 +17,8 @@ namespace DL
         /// Changes the inventory because an order happened to the inventory is replenished
         /// </summary>
         /// <param name="p_store"> The store that whill have its inventory changed</param>
-        /// <param name="p_lineitem">The product to change</param>
-        /// <returns>returns the lineitem passed to it</returns>
+        /// <param name="p_lineitem">The product to change and how much by</param>
+        /// <returns>returns the updated inventory item</returns>
         LineItems ChangeInventory(StoreFront p_store, LineItems p_lineitem);
 
         List<LineItems> GetSearchedInventory(StoreFront p_store, Products p_product);

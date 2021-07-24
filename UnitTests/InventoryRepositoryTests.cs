@@ -104,6 +104,7 @@ namespace UnitTests
             using (var context = new DBContext(_options))
             {
                 //Arrange
+                IInventoryRepository invRepo = new InventoryRepository(context);
                 StoreFront newStore = new StoreFront()
                 {
                     Name = "StorePlace1",
@@ -123,9 +124,16 @@ namespace UnitTests
                     },
                     Quantity = 2
                 };
+
                 //Act
+                LineItems updatedInv  = invRepo.ChangeInventory(newStore, lineItems);
+                LineItems sampledInv = invRepo.GetSearchedInventory(newStore, lineItems.Product)[0];
 
                 //Assert
+                Assert.NotNull(updatedInv);
+                Assert.Equal(6, updatedInv.Quantity);
+                Assert.Equal(6, sampledInv.Quantity);
+
             }
         }
 
