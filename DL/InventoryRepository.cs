@@ -77,21 +77,6 @@ namespace DL
                                   Quantity = i.Quantity
                               }).ToList();
             }
-            else if (p_product.ProductID != 0)
-            {
-                _inventory = (from i in _context.StoreInventories
-                              join p in _context.Products on i.ProductID equals p.ProductID
-                              join c in _context.Inventories on i.InventoryID equals c.InventoryID
-                              where c.Store.StoreNumber == p_store.StoreNumber &&
-                               p.ProductID == p_product.ProductID
-                              select new LineItems
-                              {
-                                  Product = i.Product,
-                                  Quantity = i.Quantity
-                              }).ToList();
-            }
-
-
             else if (p_product.Price != 0)
             {
                 _inventory = (from i in _context.StoreInventories
