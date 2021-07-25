@@ -17,36 +17,40 @@ namespace DL
         }
         public Orders AddOrder(Orders p_order)
         {
-            throw new NotImplementedException();
-            ////Get the highest order number
-            //var result = (from o in _context.Orders
-            //                  orderby o.OrderId descending
-            //                  select o).FirstOrDefault();
-            //    p_order.OrderNum = result.OrderId + 1;
-            //    var result2 = (from l in _context.LineItems
-            //                   orderby l.LineItemId descending
-            //                   select l).FirstOrDefault();
-            //    int lastLineItemId = result2.LineItemId;
-            //    foreach (LineItems item in p_order.ItemsList)
-            //    {
-            //        lastLineItemId += 1;
-            //        item.LineItemID = lastLineItemId;
-            //        _context.LineItems.Add(new Entities.LineItem
-            //        {
-            //            ProductId = item.Product.ProductID,
-            //            Quantity = item.Quantity
+            IInventoryRepository invRepo = new InventoryRepository(_context);
+            _context.Orders.Add(p_order);
+            _context.Customers.Attach(p_order.Customer);
+            foreach (LineItems prod in p_order.ItemsList)
+            {
+                _context.Products.Attach(prod.Product);
+            }
+            _context.Stores.Attach(p_order.StoreFront);
+            
+            _context.SaveChanges();
+            foreach (LineItems prod in p_order.ItemsList)
+            {
+                prod.Quantity = prod.Quantity*-1;
+                invRepo.ChangeInventory(p_order.StoreFront,prod);
+            }
 
-            //        });
-            //        _context.Orders.Add(new Entities.Order
-            //        {
-            //            OrderId = p_order.OrderNum,
-            //            StoreNumber = p_order.StoreFront.StoreNumber,
-            //            CustomerId = p_order.Customer.CustomerId,
-            //            LineItemId = lastLineItemId
-            //        });
-            //    }
-            //    _context.SaveChanges();
-                
+            return (from o in _context.Orders
+                    join c in _context.Customers on o.Customer.CustomerID equals c.CustomerID
+                    join s in _context.Stores on o.StoreFront.StoreNumber equals s.StoreNumber
+                    where o.Customer.CustomerID == p_order.Customer.CustomerID &&
+                          o.StoreFront.StoreNumber == p_order.StoreFront.StoreNumber
+                    orderby o.OrderNum descending
+                    select new Orders
+                    {
+                        OrderNum = o.OrderNum,
+                        Customer = o.Customer,
+                        StoreFront = o.StoreFront,
+                        Date = o.Date,
+                        ItemsList = o.ItemsList
+                    }
+
+            ).FirstOrDefault();
+
+
             //    foreach (LineItems item in p_order.ItemsList)
             //    {
             //        var result3 = (from i in _context.Inventories
@@ -61,7 +65,7 @@ namespace DL
 
 
             //    return p_order;
-        
+
         }
 
         public List<Orders> GetOrders(StoreFront p_store)
@@ -162,7 +166,7 @@ namespace DL
             //    }
             //    _getorders.Add(currentOrder);
             //    return _getorders;
-            
+
         }
     }
 }

@@ -126,13 +126,70 @@ namespace UnitTests
             {
                 //Arrange
                 IOrderRepository orderRepo = new OrderRepository(context);
+                StoreFront store1 = new StoreFront()
+                {
+                    Name = "StorePlace1",
+                    Address = "123321 Road st",
+                    City = "Kansas City",
+                    State = "Florida",
+                    StoreNumber = 1
+                };
 
+                Customers cust1 = new Customers()
+                {
+                    FirstName = "Caleb",
+                    LastName = "Huss",
+                    Address = "123 main st",
+                    City = "Kansas City",
+                    State = "Kansas",
+                    Email = "caleb.huss@gmail.gov",
+                    PhoneNumber = 7851231234,
+                    CustomerID = 1
+                };
+                Products prod1 = new Products
+                {
+                    Name = "RootBeer1",
+                    Price = 3.99m,
+                    Description = "desc 1",
+                    ProductID = 1
+                };
+                Products prod2 = new Products
+                {
+                    Name = "RootBeer2",
+                    Price = 3.99m,
+                    Description = "desc 2",
+                    ProductID = 2
+                };
+                Orders newOrder = new Orders()
+                {
+                    Date = new DateTime(2021, 7, 21, 5, 0, 0),
+                    StoreFront = store1,
+                    Customer = cust1,
+                    ItemsList = new List<LineItems>()
+                    {
+                        new LineItems()
+                        {
+                            Product = prod1,
+                            Quantity = 2
+                        },
+                        new LineItems()
+                        {
+                            Product = prod2,
+                            Quantity = 3
+                        }
+                    }
+                };
 
                 //Act
+                Orders orderAdded = orderRepo.AddOrder(newOrder);
 
                 //Assert
-            }
-                
+                Assert.NotNull(orderAdded);
+                Assert.Equal(2, orderAdded.OrderNum);
+                Assert.Equal(1, orderAdded.StoreFront.StoreNumber);
+                Assert.Equal(1, orderAdded.Customer.CustomerID);
+                Assert.Equal(2, orderAdded.ItemsList.Count);
+            }  
         }
 
         private void Seed()
@@ -181,7 +238,6 @@ namespace UnitTests
                             cat2,
                             cat3
                         }
-
                 };
                 StoreFront store1 = new StoreFront()
                 {
@@ -236,6 +292,28 @@ namespace UnitTests
                         new LineItems()
                         {   
                             LineItemID = 2,
+                            Product = prod2,
+                            Quantity = 3
+                        }
+                    }
+                };
+                Orders order0 = new Orders()
+                {
+                    Date = new DateTime(2021, 7, 20, 5, 0, 0),
+                    OrderNum = 0,
+                    StoreFront = store1,
+                    Customer = cust1,
+                    ItemsList = new List<LineItems>()
+                    {
+                        new LineItems()
+                        {
+                            LineItemID = 0,
+                            Product = prod1,
+                            Quantity = 1
+                        },
+                        new LineItems()
+                        {
+                            LineItemID = 3,
                             Product = prod2,
                             Quantity = 3
                         }
