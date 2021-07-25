@@ -30,20 +30,6 @@ namespace DL
                 Product = result.Product,
                 Quantity = result.Quantity
             };
-
-            // Get the specific inventory item needing to be changed
-            //var result = (from i in _context.Inventories
-            //                  where i.ProductId == p_lineitem.Product.ProductID &&
-            //                  i.StoreNumber == p_store.StoreNumber
-            //                  select i).SingleOrDefault();
-            //    result.Quantity = p_lineitem.Quantity; // change the quantity here
-
-            //    _context.Entry(result).State = EntityState.Modified;
-            //    _context.SaveChanges();
-            //    return new LineItems(){
-            //      Quantity = (int)result.Quantity,
-            //      Product = p_lineitem.Product
-            //    };
         }
 
         public List<LineItems> GetAllInventory(StoreFront p_store)
