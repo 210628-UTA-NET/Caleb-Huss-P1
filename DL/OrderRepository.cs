@@ -66,139 +66,57 @@ namespace DL
 
         public List<Orders> GetOrders(StoreFront p_store)
         {
-            throw new NotImplementedException();
-            //var result = (from o in _context.Orders
-            //                  join l in _context.LineItems on o.LineItemId equals l.LineItemId
-            //                  join p in _context.Products on l.ProductId equals p.ProductId
-            //                  join c in _context.Customers on o.CustomerId equals c.CustomerId
-            //                  where o.StoreNumber == p_store.StoreNumber
-            //                  orderby o.OrderId ascending
-            //                  select new
-            //                  {
-            //                      OrderNum = o.OrderId,
-            //                      ProductName = p.Name,
-            //                      ProductID = p.ProductId,
-            //                      ProductPrice = p.Price,
-            //                      ProductDesc = p.Description,
-            //                      ProductCat = p.Category,
-            //                      Quantity = l.Quantity,
-            //                      CustName = c.Name,
-            //                      CustID = c.CustomerId,
-            //                      CustAddress = c.Address,
-            //                      CustCity = c.City,
-            //                      CustState = c.State,
-            //                      CustEmail = c.Email,
-            //                      CustPN = c.PhoneNumber
-            //                  }).ToList();
-            //    if (result.Count == 0)
-            //    {
-            //        Console.WriteLine("No orders found");
-            //        return new List<Orders>();
-            //    }
-            //    int currentOrderNum = result[0].OrderNum;
-
-            //    foreach (var item in result)
-            //    {
-            //        if (currentOrderNum != item.OrderNum)
-            //        {
-            //            currentOrderNum = item.OrderNum;
-            //            _getorders.Add(currentOrder);
-            //            currentOrder = new Orders();
-            //        }
-            //        currentOrder.Customer = new Customers()
-            //        {
-            //            CustomerId = item.CustID,
-            //            Name = item.CustName,
-            //            Address = item.CustAddress,
-            //            City = item.CustCity,
-            //            State = item.CustState,
-            //            Email = item.CustEmail,
-            //            PhoneNumber = (long)item.CustPN
-            //        };
-            //        currentOrder.OrderNum = item.OrderNum;
-            //        currentOrder.StoreFront = p_store;
-            //        currentOrder.AddLineItem(new Products()
-            //        {
-            //            Name = item.ProductName,
-            //            Price = (float)item.ProductPrice,
-            //            Description = item.ProductDesc,
-            //            Category = item.ProductCat,
-            //            ProductID = item.ProductID
-            //        }, (int)item.Quantity);
-            //    }
-            //    _getorders.Add(currentOrder);
-            //    return _getorders;
-            
-
+            List<Orders> ordersFound = (from o in _context.Orders
+                                        join c in _context.Customers on o.Customer.CustomerID equals c.CustomerID
+                                        join s in _context.Stores on o.StoreFront.StoreNumber equals s.StoreNumber
+                                        where o.StoreFront.StoreNumber == p_store.StoreNumber
+                                        select new Orders
+                                        {
+                                            OrderNum = o.OrderNum,
+                                            Customer = o.Customer,
+                                            StoreFront = o.StoreFront,
+                                            Date = o.Date,
+                                            ItemsList = o.ItemsList
+                                        }
+            ).ToList();
+            return ordersFound;
         }
 
         public List<Orders> GetOrders(Customers p_cust)
         {
-            throw new NotImplementedException();
-            //var result = (from o in _context.Orders
-            //                  join l in _context.LineItems on o.LineItemId equals l.LineItemId
-            //                  join p in _context.Products on l.ProductId equals p.ProductId
-            //                  join s in _context.Stores on o.StoreNumber equals s.StoreNumber
-            //                  where o.CustomerId == p_cust.CustomerId
-            //                  orderby o.OrderId ascending
-            //                  select new
-            //                  {
-            //                      OrderNum = o.OrderId,
-            //                      ProductName = p.Name,
-            //                      ProductID = p.ProductId,
-            //                      ProductPrice = p.Price,
-            //                      ProductDesc = p.Description,
-            //                      ProductCat = p.Category,
-            //                      Quantity = l.Quantity,
-            //                      StoreName = s.Name,
-            //                      StoreNum = s.StoreNumber,
-            //                      StoreAddress = s.Address,
-            //                      StoreCity = s.City,
-            //                      StoreState = s.State
-            //                  }).ToList();
-            //    if (result.Count == 0)
-            //    {
-            //        Console.WriteLine("No orders found");
-            //        return new List<Orders>();
-            //    }
-            //    int currentOrderNum = result[0].OrderNum;
-
-            //    foreach (var item in result)
-            //    {
-            //        if (currentOrderNum != item.OrderNum)
-            //        {
-            //            currentOrderNum = item.OrderNum;
-            //            _getorders.Add(currentOrder);
-            //            currentOrder = new Orders();
-            //        }
-            //        currentOrder.Customer = p_cust;
-            //        currentOrder.OrderNum = item.OrderNum;
-            //        currentOrder.StoreFront = new StoreFront()
-            //        {
-            //            StoreNumber = item.StoreNum,
-            //            Name = item.StoreName,
-            //            Address = item.StoreAddress,
-            //            City = item.StoreCity,
-            //            State = item.StoreState
-            //        };
-            //        currentOrder.AddLineItem(new Products()
-            //        {
-            //            Name = item.ProductName,
-            //            Price = (float)item.ProductPrice,
-            //            Description = item.ProductDesc,
-            //            Category = item.ProductCat,
-            //            ProductID = item.ProductID
-            //        }, (int)item.Quantity);
-            //    }
-            //    _getorders.Add(currentOrder);
-            //    return _getorders;
-            
+            List<Orders> ordersFound = (from o in _context.Orders
+                                        join c in _context.Customers on o.Customer.CustomerID equals c.CustomerID
+                                        join s in _context.Stores on o.StoreFront.StoreNumber equals s.StoreNumber
+                                        where o.Customer.CustomerID == p_cust.CustomerID
+                                        select new Orders
+                                        {
+                                            OrderNum = o.OrderNum,
+                                            Customer = o.Customer,
+                                            StoreFront = o.StoreFront,
+                                            Date = o.Date,
+                                            ItemsList = o.ItemsList
+                                        }
+            ).ToList();
+            return ordersFound;
         }
 
         public List<Orders> GetOrders(StoreFront p_store, Customers p_cust)
         {
-            throw new NotImplementedException();
-
+            List<Orders> ordersFound = (from o in _context.Orders
+                                        join c in _context.Customers on o.Customer.CustomerID equals c.CustomerID
+                                        join s in _context.Stores on o.StoreFront.StoreNumber equals s.StoreNumber
+                                        where o.Customer.CustomerID == p_cust.CustomerID &&
+                                              o.StoreFront.StoreNumber == p_store.StoreNumber
+                                        select new Orders
+                                        {
+                                            OrderNum = o.OrderNum,
+                                            Customer = o.Customer,
+                                            StoreFront = o.StoreFront,
+                                            Date = o.Date,
+                                            ItemsList = o.ItemsList
+                                        }
+            ).ToList();
+            return ordersFound;
             //var result = (from o in _context.Orders
             //                  join l in _context.LineItems on o.LineItemId equals l.LineItemId
             //                  join p in _context.Products on l.ProductId equals p.ProductId
