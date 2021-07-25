@@ -16,190 +16,113 @@ namespace DL
         }
         public LineItems ChangeInventory(StoreFront p_store, LineItems p_lineitem)
         {
-            throw new NotImplementedException();
-            // Get the specific inventory item needing to be changed
-            //var result = (from i in _context.Inventories
-            //                  where i.ProductId == p_lineitem.Product.ProductID &&
-            //                  i.StoreNumber == p_store.StoreNumber
-            //                  select i).SingleOrDefault();
-            //    result.Quantity = p_lineitem.Quantity; // change the quantity here
-
-            //    _context.Entry(result).State = EntityState.Modified;
-            //    _context.SaveChanges();
-            //    return new LineItems(){
-            //      Quantity = (int)result.Quantity,
-            //      Product = p_lineitem.Product
-            //    };
-            
-
+            var result = (from i in _context.StoreInventories
+                          join p in _context.Products on i.ProductID equals p.ProductID
+                          join c in _context.Inventories on i.InventoryID equals c.InventoryID
+                          where c.Store.StoreNumber == p_store.StoreNumber &&
+                           p.ProductID == p_lineitem.Product.ProductID
+                          select i
+                          ).FirstOrDefault();
+            result.Quantity += p_lineitem.Quantity;
+            _context.Entry(result).State = EntityState.Modified;
+            _context.SaveChanges();
+            return new LineItems(){
+                Product = result.Product,
+                Quantity = result.Quantity
+            };
         }
 
         public List<LineItems> GetAllInventory(StoreFront p_store)
         {
-            List<LineItems> storeInventory = new List<LineItems>() ;
+            List<LineItems> storeInventory = new List<LineItems>();
             storeInventory = (from sInv in _context.StoreInventories
-                                select new LineItems
-                                {
-                                    Product = sInv.Product,
-                                    Quantity = sInv.Quantity
-                                }
+                              select new LineItems
+                              {
+                                  Product = sInv.Product,
+                                  Quantity = sInv.Quantity
+                              }
             ).ToList();
             return storeInventory;
         }
 
         public List<LineItems> GetSearchedInventory(StoreFront p_store, Products p_product)
         {
-            throw new NotImplementedException();
-            // get selected inventory from store
-            //if (p_product.Name != null)
-            //    {
-            //        // Get invertory of a certain store with certain parameters
-            //        var _storeInventory = (from i in _context.Inventories
-            //                               join p in _context.Products on i.ProductId equals p.ProductId
-            //                               where i.StoreNumber == p_store.StoreNumber &&
-            //                                p.Name.Contains(p_product.Name)
-            //                               select new
-            //                               {  //map query to variables and create a list
-            //                                   StoreNumber = i.StoreNumber,
-            //                                   Quantity = i.Quantity,
-            //                                   ProductName = p.Name,
-            //                                   Price = p.Price,
-            //                                   Description = p.Description,
-            //                                   Category = p.Category,
-            //                                   ProductID = p.ProductId
-            //                               }).ToList();
-            //        // takes mapped query and applies them to lineitem models
-            //        foreach (var item in _storeInventory)
-            //        {
-            //            LineItems _lineitem = new LineItems();
-            //            _lineitem.Quantity = (int)item.Quantity;
-            //            Products _item = new Products()
-            //            {
-            //                Name = item.ProductName,
-            //                Price = (float)item.Price,
-            //                Description = item.Description,
-            //                Category = item.Category,
-            //                ProductID = item.ProductID
-            //            };
-            //            _lineitem.Product = _item;
-            //            _inventory.Add(_lineitem);
-            //        }
-
-            //    }
-            //    else if (p_product.ProductID != 0)
-            //    {
-            //        // Get invertory of a certain store with certain parameters
-            //        var _storeInventory = (from i in _context.Inventories
-            //                               join p in _context.Products on i.ProductId equals p.ProductId
-            //                               where i.StoreNumber == p_store.StoreNumber &&
-            //                                p.ProductId == p_product.ProductID
-            //                               select new
-            //                               {  //map query to variables and create a list
-            //                                   StoreNumber = i.StoreNumber,
-            //                                   Quantity = i.Quantity,
-            //                                   ProductName = p.Name,
-            //                                   Price = p.Price,
-            //                                   Description = p.Description,
-            //                                   Category = p.Category,
-            //                                   ProductID = p.ProductId
-            //                               }).ToList();
-            //        // takes mapped query and applies them to lineitem models
-            //        foreach (var item in _storeInventory)
-            //        {
-            //            LineItems _lineitem = new LineItems();
-            //            _lineitem.Quantity = (int)item.Quantity;
-            //            Products _item = new Products()
-            //            {
-            //                Name = item.ProductName,
-            //                Price = (float)item.Price,
-            //                Description = item.Description,
-            //                Category = item.Category,
-            //                ProductID = item.ProductID
-            //            };
-            //            _lineitem.Product = _item;
-            //            _inventory.Add(_lineitem);
-            //        }
-
-            //    }
-            //    else if (p_product.Price != 0)
-            //    {
-            //        // Get invertory of a certain store with certain parameters
-            //        var _storeInventory = (from i in _context.Inventories
-            //                               join p in _context.Products on i.ProductId equals p.ProductId
-            //                               where i.StoreNumber == p_store.StoreNumber &&
-            //                               p.Price == (decimal)p_product.Price
-
-            //                               select new
-            //                               {  //map query to variables and create a list
-            //                                   StoreNumber = i.StoreNumber,
-            //                                   Quantity = i.Quantity,
-            //                                   ProductName = p.Name,
-            //                                   Price = p.Price,
-            //                                   Description = p.Description,
-            //                                   Category = p.Category,
-            //                                   ProductID = p.ProductId
-            //                               }).ToList();
-            //        // takes mapped query and applies them to lineitem models
-            //        foreach (var item in _storeInventory)
-            //        {
-            //            LineItems _lineitem = new LineItems();
-            //            _lineitem.Quantity = (int)item.Quantity;
-            //            Products _item = new Products()
-            //            {
-            //                Name = item.ProductName,
-            //                Price = (float)item.Price,
-            //                Description = item.Description,
-            //                Category = item.Category,
-            //                ProductID = item.ProductID
-            //            };
-            //            _lineitem.Product = _item;
-            //            _inventory.Add(_lineitem);
-            //        }
-
-            //    }
-            //    else if (p_product.Category != null)
-            //    {
-            //        // Get invertory of a certain store with certain parameters
-            //        var _storeInventory = (from i in _context.Inventories
-            //                               join p in _context.Products on i.ProductId equals p.ProductId
-            //                               where i.StoreNumber == p_store.StoreNumber &&
-            //                               p.Category.Contains(p_product.Category)
-            //                               select new
-            //                               {  //map query to variables and create a list
-            //                                   StoreNumber = i.StoreNumber,
-            //                                   Quantity = i.Quantity,
-            //                                   ProductName = p.Name,
-            //                                   Price = p.Price,
-            //                                   Description = p.Description,
-            //                                   Category = p.Category,
-            //                                   ProductID = p.ProductId
-            //                               }).ToList();
-            //        // takes mapped query and applies them to lineitem models
-            //        foreach (var item in _storeInventory)
-            //        {
-            //            LineItems _lineitem = new LineItems();
-            //            _lineitem.Quantity = (int)item.Quantity;
-            //            Products _item = new Products()
-            //            {
-            //                Name = item.ProductName,
-            //                Price = (float)item.Price,
-            //                Description = item.Description,
-            //                Category = item.Category,
-            //                ProductID = item.ProductID
-            //            };
-            //            _lineitem.Product = _item;
-            //            _inventory.Add(_lineitem);
-            //        }
-
-            //    }
+            List<LineItems> _inventory = new List<LineItems>();
 
 
-            //    return _inventory;
+            if (p_product.ProductID != 0)
+            {
+                _inventory = (from i in _context.StoreInventories
+                              join p in _context.Products on i.ProductID equals p.ProductID
+                              join c in _context.Inventories on i.InventoryID equals c.InventoryID
+                              where c.Store.StoreNumber == p_store.StoreNumber &&
+                               p.ProductID == p_product.ProductID
+                              select new LineItems
+                              {
+                                  Product = i.Product,
+                                  Quantity = i.Quantity
+                              }).ToList();
+            }
+            else if (p_product.Name != null)
+            {
+                // Get invertory of a certain store with certain parameters
+                _inventory = (from i in _context.StoreInventories
+                              join p in _context.Products on i.ProductID equals p.ProductID
+                              join c in _context.Inventories on i.InventoryID equals c.InventoryID
+                              where c.Store.StoreNumber == p_store.StoreNumber &&
+                               p.Name.Contains(p_product.Name)
+                              select new LineItems
+                              {  //map query to variables and create a list
+                                  Product = i.Product,
+                                  Quantity = i.Quantity
+                              }).ToList();
+            }
+            else if (p_product.ProductID != 0)
+            {
+                _inventory = (from i in _context.StoreInventories
+                              join p in _context.Products on i.ProductID equals p.ProductID
+                              join c in _context.Inventories on i.InventoryID equals c.InventoryID
+                              where c.Store.StoreNumber == p_store.StoreNumber &&
+                               p.ProductID == p_product.ProductID
+                              select new LineItems
+                              {
+                                  Product = i.Product,
+                                  Quantity = i.Quantity
+                              }).ToList();
+            }
 
 
+            else if (p_product.Price != 0)
+            {
+                _inventory = (from i in _context.StoreInventories
+                              join p in _context.Products on i.ProductID equals p.ProductID
+                              join c in _context.Inventories on i.InventoryID equals c.InventoryID
+                              where c.Store.StoreNumber == p_store.StoreNumber &&
+                              p.Price == (decimal)p_product.Price
 
+                              select new LineItems
+                              {
+                                  Product = i.Product,
+                                  Quantity = i.Quantity
+                              }).ToList();
+            }
 
-            
+            else if (p_product.Categories != null)
+            {
+                var cat = p_product.Categories[0].Category;
+                _inventory = (from p in _context.Products
+                              join sInv in _context.StoreInventories on p.ProductID equals sInv.ProductID
+                              join inv in _context.Inventories on sInv.InventoryID equals inv.InventoryID
+                              where p.Categories.Any(c => c.Category == cat) &&
+                              inv.Store.StoreNumber == p_store.StoreNumber
+
+                              select new LineItems
+                              {
+                                  Product = sInv.Product,
+                                  Quantity = sInv.Quantity
+                              }).ToList();
+            }
+            return _inventory;
         }
     }
 }

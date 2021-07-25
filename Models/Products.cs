@@ -11,7 +11,7 @@ namespace Models
         public string Description{ get; set; }
         [Key]
         public int ProductID { get; set; }
-        public virtual List<Categories> Categories { get; set; }
+        public List<Categories> Categories { get; set; }
 
         public override string ToString()
         {

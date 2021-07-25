@@ -10,6 +10,6 @@ namespace Models
         public int CategoryID { get; set; }
         public string Category { get; set; }
 
-        public virtual List<Products> Products {get; set;}
+        public List<Products> Products {get; set;}
     }
 }
