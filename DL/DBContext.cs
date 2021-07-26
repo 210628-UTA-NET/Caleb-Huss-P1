@@ -27,8 +27,8 @@ namespace DL
         public DBContext(DbContextOptions options) : base(options)
         { }
 
-        
-            protected override void OnModelCreating(ModelBuilder p_modelBuilder)
+
+        protected override void OnModelCreating(ModelBuilder p_modelBuilder)
         {
             p_modelBuilder.Entity<Customers>()
                 .Property(cust => cust.CustomerID)
@@ -53,6 +53,9 @@ namespace DL
                 .ValueGeneratedOnAdd();
             p_modelBuilder.Entity<StoreInventory>()
                 .HasKey(inv => new { inv.ProductID, inv.InventoryID });
+            p_modelBuilder.Entity<Employee>()
+                .Property(employee => employee.EmployeeID)
+                .ValueGeneratedOnAdd();
         }
     }
 }
