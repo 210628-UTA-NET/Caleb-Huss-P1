@@ -7,7 +7,7 @@ namespace BL
 {
     public class InventoryBL : IInventoryBL
     {   
-        private IInventoryRepository _repo;
+        private readonly IInventoryRepository _repo;
         public InventoryBL(IInventoryRepository p_repo)
         {
             _repo = p_repo;

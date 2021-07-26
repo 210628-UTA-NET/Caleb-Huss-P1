@@ -6,7 +6,7 @@ namespace BL
 {
     public class OrderBL : IOrderBL
     {
-        private IOrderRepository _repo;
+        private readonly IOrderRepository _repo;
         public OrderBL(IOrderRepository p_repo)
         {
             _repo = p_repo;

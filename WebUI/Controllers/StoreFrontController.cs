@@ -10,7 +10,7 @@ namespace WebUI.Controllers
 {
     public class StoreFrontController : Controller
     {
-        private IStoreBL _storeBL;
+        private readonly IStoreBL _storeBL;
         public StoreFrontController(IStoreBL p_storeBL)
         {
             _storeBL = p_storeBL;
@@ -20,7 +20,7 @@ namespace WebUI.Controllers
             return View(
                 _storeBL.GetAllStores()
                 .Select(rest => new StoreFrontVM(rest))
-            ); ;
+            );
         }
     }
 }

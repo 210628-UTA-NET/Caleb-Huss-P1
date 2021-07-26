@@ -7,7 +7,7 @@ namespace DL
 {
     public class StoreRepository : IStoreRepository
     {
-        private DBContext _context;
+        private readonly DBContext _context;
         public StoreRepository(DBContext p_context)
         {
             _context = p_context;

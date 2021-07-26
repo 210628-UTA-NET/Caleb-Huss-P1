@@ -7,7 +7,7 @@ namespace BL
 {
     public class StoreBL : IStoreBL
     {
-        private IStoreRepository _repo;
+        private readonly IStoreRepository _repo;
 
         public StoreBL(IStoreRepository p_repo)
         {

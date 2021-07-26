@@ -6,13 +6,11 @@ namespace Models
 {
     public class Orders
     {
-        private List<LineItems> _itemslist = new List<LineItems>();
-        private decimal _totalprice;
         public decimal TotalPrice
         {
             get
-            {   _totalprice = 0;
-                foreach (LineItems lineitem in _itemslist)
+            {   decimal _totalprice = 0;
+                foreach (LineItems lineitem in ItemsList)
                 {
                     _totalprice += lineitem.Product.Price * lineitem.Quantity;
                 }
@@ -26,16 +24,20 @@ namespace Models
         public StoreFront StoreFront { get; set; }
         public Customers Customer { get; set; }
         public void AddLineItem(Products p_product, int p_quantity){
-            LineItems _newListItem = new LineItems()
+            LineItems newListItem = new LineItems()
             {
                 Product = p_product,
                 Quantity = p_quantity
             };
-            _itemslist.Add(_newListItem);
+            List<LineItems> tempList = this.ItemsList;
+            tempList.Add(newListItem);
+            this.ItemsList = tempList;
         }
         public void AddLineItem(LineItems p_lineItem)
         {
-            _itemslist.Add(p_lineItem);
+            List<LineItems> tempList = this.ItemsList;
+            tempList.Add(p_lineItem);
+            this.ItemsList = tempList;
         }
         public override string ToString()
         {

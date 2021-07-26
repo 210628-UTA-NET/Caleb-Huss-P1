@@ -8,8 +8,7 @@ namespace DL
 {
     public class InventoryRepository : IInventoryRepository
     {
-        private DBContext _context;
-        private List<LineItems> _inventory = new List<LineItems>();
+        private readonly DBContext _context;
         public InventoryRepository(DBContext p_context)
         {
             _context = p_context;
@@ -34,7 +33,7 @@ namespace DL
 
         public List<LineItems> GetAllInventory(StoreFront p_store)
         {
-            List<LineItems> storeInventory = new List<LineItems>();
+            List<LineItems> storeInventory;
             storeInventory = (from sInv in _context.StoreInventories
                               select new LineItems
                               {
@@ -83,7 +82,7 @@ namespace DL
                               join p in _context.Products on i.ProductID equals p.ProductID
                               join c in _context.Inventories on i.InventoryID equals c.InventoryID
                               where c.Store.StoreNumber == p_store.StoreNumber &&
-                              p.Price == (decimal)p_product.Price
+                              p.Price == p_product.Price
 
                               select new LineItems
                               {
