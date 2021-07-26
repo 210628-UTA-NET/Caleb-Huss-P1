@@ -27,7 +27,17 @@ namespace BL
         /// </summary>
         /// <param name="p_cust"> This is the object that represent the customer to be added</param>
         /// <returns>Just returns the customer added</returns>
-        Customers AddCustomer(Customers p_cust);
+        Customers AddCustomer(Customers p_cust, string p_password);
+        
+        /// <summary>
+        /// Checks the credentials provided and returns customer stuff if valid
+        /// </summary>
+        /// <param name="p_email">the email the user provided</param>
+        /// <param name="p_password">the password the user provided</param>
+        /// <returns></returns>
+        Customers CheckCredentials(string p_email, string p_password);
+
+
 
     }
 }

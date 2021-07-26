@@ -39,6 +39,13 @@ namespace DL
         /// </summary>
         /// <param name="p_cust">Customer to get salt and hash</param>
         /// <returns>returns the salt and hash for that customer</returns>
-        List<String> GetSaltAndHash(Customers p_cust);
+        UserLogin GetCredentials(Customers p_cust);
+
+        /// <summary>
+        /// Add the users credentials to the DB
+        /// </summary>
+        /// <param name="p_userLogin">the salt and hash to be added</param>
+        /// <returns>returns back the userlogin info</returns>
+        UserLogin AddCredentials(UserLogin p_userLogin);
     }
 }

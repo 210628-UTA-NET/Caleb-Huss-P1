@@ -83,6 +83,23 @@ namespace DL.Migrations
                     b.ToTable("Customers");
                 });
 
+            modelBuilder.Entity("Models.Employee", b =>
+                {
+                    b.Property<int>("EmployeeID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CustomerID")
+                        .HasColumnType("int");
+
+                    b.HasKey("EmployeeID");
+
+                    b.HasIndex("CustomerID");
+
+                    b.ToTable("Employee");
+                });
+
             modelBuilder.Entity("Models.Inventory", b =>
                 {
                     b.Property<int>("InventoryID")
@@ -99,7 +116,7 @@ namespace DL.Migrations
                         .IsUnique()
                         .HasFilter("[StoreFront] IS NOT NULL");
 
-                    b.ToTable("Inventory");
+                    b.ToTable("Inventories");
                 });
 
             modelBuilder.Entity("Models.LineItems", b =>
@@ -212,7 +229,7 @@ namespace DL.Migrations
 
                     b.HasIndex("InventoryID");
 
-                    b.ToTable("StoreInventory");
+                    b.ToTable("StoreInventories");
                 });
 
             modelBuilder.Entity("Models.UserLogin", b =>
@@ -244,6 +261,15 @@ namespace DL.Migrations
                         .HasForeignKey("ProductsProductID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Models.Employee", b =>
+                {
+                    b.HasOne("Models.Customers", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerID");
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("Models.Inventory", b =>

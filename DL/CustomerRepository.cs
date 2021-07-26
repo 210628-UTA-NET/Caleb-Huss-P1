@@ -13,6 +13,14 @@ namespace DL
         {
             _context = p_context;
         }
+
+        public UserLogin AddCredentials(UserLogin p_userLogin)
+        {
+            _context.UserLogin.Add(p_userLogin);
+            _context.SaveChanges();
+            return p_userLogin;
+        }
+
         public Customers AddCustomer(Customers p_cust)
         {
             _context.Customers.Add(p_cust);
@@ -69,13 +77,23 @@ namespace DL
             return custsFound;
         }
 
+        public UserLogin GetCredentials(Customers p_cust)
+        {
+            UserLogin userLogin = (from uLog in _context.UserLogin
+                                 join c in _context.Customers on uLog.CustomerID equals c.CustomerID
+                                 where p_cust.CustomerID == uLog.CustomerID
+                                 select uLog
+            ).FirstOrDefault();
+            return userLogin;
+        }
+
         public Customers GetCustomer(Customers p_cust)
         {
             //If provided the customer ID just return the customer associated with that ID.
 
             if (p_cust.CustomerID != 0)
             {
-               return _context.Customers.Find(p_cust.CustomerID);;
+               return _context.Customers.Find(p_cust.CustomerID);
             }
             
             var query = _context.Customers.AsQueryable();
@@ -99,9 +117,5 @@ namespace DL
             return query.FirstOrDefault();
         }
 
-        public List<string> GetSaltAndHash(Customers p_cust)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
