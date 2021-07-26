@@ -8,9 +8,7 @@ namespace DL
 {
     public class OrderRepository : IOrderRepository
     {
-        private DBContext _context;
-        private List<Orders> _getorders = new List<Orders>();
-        private Orders currentOrder = new Orders();
+        private readonly DBContext _context;
         public OrderRepository(DBContext p_context)
         {
             _context = p_context;
@@ -49,23 +47,6 @@ namespace DL
                     }
 
             ).FirstOrDefault();
-
-
-            //    foreach (LineItems item in p_order.ItemsList)
-            //    {
-            //        var result3 = (from i in _context.Inventories
-            //                  where i.ProductId == item.Product.ProductID &&
-            //                  i.StoreNumber == p_order.StoreFront.StoreNumber
-            //                  select i).SingleOrDefault();
-            //    result3.Quantity -= item.Quantity; // change the quantity here
-
-            //    _context.Entry(result).State = EntityState.Modified;
-            //    _context.SaveChanges();
-            //    }
-
-
-            //    return p_order;
-
         }
 
         public List<Orders> GetOrders(StoreFront p_store)
@@ -121,52 +102,6 @@ namespace DL
                                         }
             ).ToList();
             return ordersFound;
-            //var result = (from o in _context.Orders
-            //                  join l in _context.LineItems on o.LineItemId equals l.LineItemId
-            //                  join p in _context.Products on l.ProductId equals p.ProductId
-            //                  where o.StoreNumber == p_store.StoreNumber &&
-            //                        o.CustomerId == p_cust.CustomerId
-            //                 orderby o.OrderId ascending
-            //                  select new
-            //                  {
-            //                      OrderNum = o.OrderId,
-            //                      ProductName = p.Name,
-            //                      ProductID = p.ProductId,
-            //                      ProductPrice = p.Price,
-            //                      ProductDesc = p.Description,
-            //                      ProductCat = p.Category,
-            //                      Quantity = l.Quantity
-            //                  }).ToList();
-            //    if (result.Count == 0)
-            //    {
-            //        Console.WriteLine("No orders found");
-            //        return new List<Orders>();
-            //    }
-            //    int currentOrderNum = result[0].OrderNum;
-
-            //    foreach (var item in result)
-            //    {
-            //        if (currentOrderNum != item.OrderNum)
-            //        {
-            //            currentOrderNum = item.OrderNum;
-            //            _getorders.Add(currentOrder);
-            //            currentOrder = new Orders();
-            //        }
-            //        currentOrder.Customer = p_cust;
-            //        currentOrder.OrderNum = item.OrderNum;
-            //        currentOrder.StoreFront = p_store;
-            //        currentOrder.AddLineItem(new Products()
-            //        {
-            //            Name = item.ProductName,
-            //            Price = (float)item.ProductPrice,
-            //            Description = item.ProductDesc,
-            //            Category = item.ProductCat,
-            //            ProductID = item.ProductID
-            //        }, (int)item.Quantity);
-            //    }
-            //    _getorders.Add(currentOrder);
-            //    return _getorders;
-
         }
     }
 }

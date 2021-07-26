@@ -9,7 +9,7 @@ namespace BL
 {
     public class CustomerBL : ICustomerBL
     {
-        private ICustomerRepository _repo;
+        private readonly ICustomerRepository _repo;
         public CustomerBL(ICustomerRepository p_repo)
         {
             _repo = p_repo;

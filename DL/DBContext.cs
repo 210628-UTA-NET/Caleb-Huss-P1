@@ -29,32 +29,32 @@ namespace DL
         { }
 
 
-        protected override void OnModelCreating(ModelBuilder p_modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            p_modelBuilder.Entity<Customers>()
+            modelBuilder.Entity<Customers>()
                 .Property(cust => cust.CustomerID)
                 .ValueGeneratedOnAdd();
-            p_modelBuilder.Entity<StoreFront>()
+            modelBuilder.Entity<StoreFront>()
                 .Property(store => store.StoreNumber)
                 .ValueGeneratedOnAdd();
-            p_modelBuilder.Entity<LineItems>()
+            modelBuilder.Entity<LineItems>()
                 .Property(li => li.LineItemID)
                 .ValueGeneratedOnAdd();
-            p_modelBuilder.Entity<Orders>()
+            modelBuilder.Entity<Orders>()
                 .Property(order => order.OrderNum)
                 .ValueGeneratedOnAdd();
-            p_modelBuilder.Entity<Products>()
+            modelBuilder.Entity<Products>()
                 .Property(product => product.ProductID)
                 .ValueGeneratedOnAdd();
-            p_modelBuilder.Entity<Categories>()
+            modelBuilder.Entity<Categories>()
                 .Property(category => category.CategoryID)
                 .ValueGeneratedOnAdd();
-            p_modelBuilder.Entity<Inventory>()
+            modelBuilder.Entity<Inventory>()
                 .Property(inv => inv.InventoryID)
                 .ValueGeneratedOnAdd();
-            p_modelBuilder.Entity<StoreInventory>()
+            modelBuilder.Entity<StoreInventory>()
                 .HasKey(inv => new { inv.ProductID, inv.InventoryID });
-            p_modelBuilder.Entity<Employee>()
+            modelBuilder.Entity<Employee>()
                 .Property(employee => employee.EmployeeID)
                 .ValueGeneratedOnAdd();
         }

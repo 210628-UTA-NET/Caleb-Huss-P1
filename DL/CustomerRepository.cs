@@ -8,7 +8,7 @@ namespace DL
     public class CustomerRepository : ICustomerRepository
     {
 
-        private DBContext _context;
+        private readonly DBContext _context;
         public CustomerRepository(DBContext p_context)
         {
             _context = p_context;
