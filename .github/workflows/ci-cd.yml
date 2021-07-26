@@ -29,7 +29,7 @@ jobs:
         sonarProjectKey: 210628-UTA-NET_Caleb-Huss-P1
         sonarProjectName: Caleb-Huss-P1
         sonarOrganization: 210628-uta-net
-        dotnetDisableTests: false
+        dotnetTestArguments: --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
