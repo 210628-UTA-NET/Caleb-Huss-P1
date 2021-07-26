@@ -200,11 +200,33 @@ namespace UnitTests
             using(var context = new DBContext(_options))
             {
                 //Assert
-
+                ICustomerRepository custRepo = new CustomerRepository(context);
+                UserLogin newUserLogin = new UserLogin()
+                {
+                    CustomerID = 2,
+                    hash = "asdjf8av318hv98",
+                    salt = "9230jvjvea93"
+                };
+                Customers cust2 = new Customers
+                {
+                    FirstName = "Caleb",
+                    LastName = "Buss",
+                    Address = "45554 E Stree Roud",
+                    City = "La City",
+                    State = "Kansas",
+                    Email = "caleb.buss@gmail.gov",
+                    PhoneNumber = 1235559762,
+                    CustomerID = 2
+                };
 
                 //Arrange
-
+                custRepo.AddCredentials(newUserLogin);
+                UserLogin foundLogin = custRepo.GetCredentials(cust2);
                 //Act
+                Assert.NotNull(foundLogin);
+                Assert.Equal(2, foundLogin.CustomerID);
+                Assert.Equal("asdjf8av318hv98", foundLogin.hash);
+                Assert.Equal("9230jvjvea93", foundLogin.salt);
             }
         }
 

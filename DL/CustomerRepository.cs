@@ -14,9 +14,11 @@ namespace DL
             _context = p_context;
         }
 
-        public Customers AddCredentials(Customers p_cust, string p_salt, string p_hash)
+        public UserLogin AddCredentials(UserLogin p_userLogin)
         {
-            throw new NotImplementedException();
+            _context.UserLogin.Add(p_userLogin);
+            _context.SaveChanges();
+            return p_userLogin;
         }
 
         public Customers AddCustomer(Customers p_cust)
@@ -79,7 +81,7 @@ namespace DL
         {
             UserLogin userLogin = (from uLog in _context.UserLogin
                                  join c in _context.Customers on uLog.CustomerID equals c.CustomerID
-                                 where c.CustomerID == uLog.CustomerID
+                                 where p_cust.CustomerID == uLog.CustomerID
                                  select uLog
             ).FirstOrDefault();
             return userLogin;
