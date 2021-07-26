@@ -163,6 +163,51 @@ namespace UnitTests
                 Assert.Equal(found.CustomerID, newCustomer.CustomerID);
             }
         }
+        [Fact]
+        public void GetCredentialsShouldGetCredentials()
+        {
+            using (var context = new DBContext(_options))
+            {
+                //Assert
+                ICustomerRepository custRepo = new CustomerRepository(context);
+                Customers custToGet = new Customers
+                {
+                    FirstName = "Caleb",
+                    LastName = "Huss",
+                    Address = "123 main st",
+                    City = "Kansas City",
+                    State = "Kansas",
+                    Email = "caleb.huss@gmail.gov",
+                    PhoneNumber = 7851231234,
+                    CustomerID = 1
+                };
+
+                //Arrange
+                UserLogin loginCredententials = custRepo.GetCredentials(custToGet);
+
+                //Act
+                Assert.NotNull(loginCredententials);
+                Assert.Equal(1, loginCredententials.CustomerID);
+                Assert.Equal("U+sKO++VApFpLBUmpHDZPw==", loginCredententials.salt);
+                Assert.Equal("FYgdRJdpy0nghiS24gnfATCYerGltYAysh8lMWujuZ8=", loginCredententials.hash);
+            }
+            
+
+        }
+        [Fact]
+        public void AddCredentialsShouldAddCredentials()
+        {
+            using(var context = new DBContext(_options))
+            {
+                //Assert
+
+
+                //Arrange
+
+                //Act
+            }
+        }
+
         private void Seed()
         {
             using (var context = new DBContext(_options))
@@ -170,18 +215,19 @@ namespace UnitTests
                 //Makes sure in memory db is deleted before another test case uses it
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
+                Customers cust1 = new Customers
+                {
+                    FirstName = "Caleb",
+                    LastName = "Huss",
+                    Address = "123 main st",
+                    City = "Kansas City",
+                    State = "Kansas",
+                    Email = "caleb.huss@gmail.gov",
+                    PhoneNumber = 7851231234,
+                    CustomerID = 1
+                };
                 context.Customers.AddRange(
-                    new Customers
-                    {
-                        FirstName = "Caleb",
-                        LastName = "Huss",
-                        Address = "123 main st",
-                        City = "Kansas City",
-                        State = "Kansas",
-                        Email = "caleb.huss@gmail.gov",
-                        PhoneNumber = 7851231234,
-                        CustomerID = 1
-                    },
+                    cust1,
                     new Customers
                     {
                         FirstName = "Caleb",
@@ -227,6 +273,15 @@ namespace UnitTests
                         PhoneNumber = 8679511234,
                         CustomerID = 11
                     });
+                context.UserLogin.Add(
+                    new UserLogin
+                    {
+                        CustomerID = 1,
+                        hash = "FYgdRJdpy0nghiS24gnfATCYerGltYAysh8lMWujuZ8=",
+                        salt = "U+sKO++VApFpLBUmpHDZPw==",
+                        Customer = cust1
+                    });
+                
                 context.SaveChanges();
             }
         }

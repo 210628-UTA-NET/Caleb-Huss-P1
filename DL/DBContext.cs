@@ -21,6 +21,7 @@ namespace DL
         public DbSet<Products> Products { get; set; }
         public DbSet<StoreInventory> StoreInventories { get; set; }
         public DbSet<UserLogin> UserLogin { get; set; }
+        public DbSet<Employee> Employees { get; set; }
         public DBContext() : base()
         { }
 
