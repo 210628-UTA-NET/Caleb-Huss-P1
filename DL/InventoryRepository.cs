@@ -25,7 +25,8 @@ namespace DL
             result.Quantity += p_lineitem.Quantity;
             _context.Entry(result).State = EntityState.Modified;
             _context.SaveChanges();
-            return new LineItems(){
+            return new LineItems()
+            {
                 Product = result.Product,
                 Quantity = result.Quantity
             };
@@ -35,6 +36,10 @@ namespace DL
         {
             List<LineItems> storeInventory;
             storeInventory = (from sInv in _context.StoreInventories
+                              join inv in _context.Inventories on sInv.InventoryID equals inv.InventoryID
+                              join s in _context.Stores on inv.Store.StoreNumber equals s.StoreNumber
+                              join p in _context.Products on sInv.ProductID equals p.ProductID
+                              where inv.Store.StoreNumber == p_store.StoreNumber
                               select new LineItems
                               {
                                   Product = sInv.Product,
