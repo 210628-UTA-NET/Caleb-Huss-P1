@@ -76,7 +76,15 @@ namespace DL
 
         public void EmptyCart(string p_cartId)
         {
-            throw new NotImplementedException();
+            var cartItem = (from c in _context.Carts
+                            where c.CartID == p_cartId
+                            select c
+            ).ToList();
+            foreach (var item in cartItem)
+            {
+                _context.Carts.Remove(item);   
+            }
+            _context.SaveChanges();
         }
 
         public List<Cart> GetCartItems(string p_cartId)
@@ -144,12 +152,30 @@ namespace DL
 
         public void MigrateCart(string p_email, string p_tempCartID)
         {
-            throw new NotImplementedException();
+            var cartItems = (from c in _context.Carts
+                            where c.CartID == p_tempCartID
+                            select c   
+            ).ToList();
+
+            foreach (var item in cartItems)
+            {
+                item.CartID = p_email;
+            }
+            _context.SaveChanges();
         }
 
         public void RemoveFromCart(int p_productid, string p_cartId)
         {
-            throw new NotImplementedException();
+            var cartItem = (from c in _context.Carts
+                            where c.CartID == p_cartId
+                            && c.ProductID == p_productid
+                            select c
+            ).FirstOrDefault();
+            if (cartItem != null)
+            {
+                _context.Carts.Remove(cartItem);
+                _context.SaveChanges();
+            }
         }
     }
 }

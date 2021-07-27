@@ -214,7 +214,66 @@ namespace UnitTests
         [Fact]
         public void EmptyCartShouldRemoveAllCartItems()
         {
+            using (var context = new DBContext(_options))
+            {
+                //Arrange
+                IOrderRepository orderRepo = new OrderRepository(context);
+                string cartID = "caleb.huss@gmail.gov";
 
+                //Act
+                List<Cart> preRemovedItems = orderRepo.GetCartItems(cartID);
+                orderRepo.EmptyCart(cartID);
+                List<Cart> postRemovedItems = orderRepo.GetCartItems(cartID);
+
+                //Assert
+                Assert.NotEmpty(preRemovedItems);
+                Assert.Empty(postRemovedItems);
+            }
+        }
+
+        [Theory]
+        [InlineData(1,1,2,2)]
+        [InlineData(3, 5, 3,5)]
+        public void AddToCartShouldAddItemToCart(int p_productId, int p_quantity, int p_expectedLength, int p_expectQuantity)
+        {
+            using (var context = new DBContext(_options))
+            {
+                //Arrange
+                IOrderRepository orderRepo = new OrderRepository(context);
+                string cartID = "caleb.huss@gmail.gov";
+                LineItems newLineItem = new LineItems()
+                {
+                    Product = new Products() {ProductID = p_productId},
+                    Quantity = p_quantity
+                };
+                //Act
+                orderRepo.AddToCart(newLineItem, cartID);
+                List<Cart> getCart = orderRepo.GetCartItems(cartID);
+
+                //Assert
+                Assert.NotEmpty(getCart);
+                Assert.Equal(p_expectedLength, getCart.Count);
+                Assert.Equal(p_expectQuantity, getCart[getCart.Count-1].Quantity);
+            }
+        }
+        [Fact]
+        public void RemoveFromCartShouldRemoveItemFromCart()
+        {
+            using (var context = new DBContext(_options))
+            {
+                //Arrange
+                IOrderRepository orderRepo = new OrderRepository(context);
+                int productToRemove = 1;
+                string cartID = "caleb.huss@gmail.gov";
+
+                //Act
+                orderRepo.RemoveFromCart(productToRemove, cartID);
+                List<Cart> newCart = orderRepo.GetCartItems(cartID);
+
+                //Assert
+                Assert.NotEmpty(newCart);
+                Assert.Equal(2, newCart[0].ProductID);
+            }
         }
         private void Seed()
         {
@@ -257,6 +316,18 @@ namespace UnitTests
                     Price = 3.99m,
                     Description = "desc 2",
                     ProductID = 2,
+                    Categories = new List<Categories>
+                        {
+                            cat2,
+                            cat3
+                        }
+                };
+                Products prod3 = new Products
+                {
+                    Name = "RootBeer3",
+                    Price = 3.99m,
+                    Description = "desc 3",
+                    ProductID = 3,
                     Categories = new List<Categories>
                         {
                             cat2,
@@ -358,7 +429,7 @@ namespace UnitTests
                     Quantity = 2
                 };
 
-                context.Products.AddRange(prod1, prod2);
+                context.Products.AddRange(prod1, prod2, prod3);
                 context.Inventories.Add(inv1);
                 context.StoreInventories.AddRange(sInv1, sInv2);
                 context.Orders.Add(order1);
