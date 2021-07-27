@@ -192,6 +192,30 @@ namespace UnitTests
             }  
         }
 
+        [Fact]
+        public void GetCartItemsShouldGetCartItems()
+        {
+            using (var context = new DBContext(_options))
+            {
+                //Arrange
+                IOrderRepository orderRepo = new OrderRepository(context);
+
+                //Act
+                List<Cart> foundCartItems = orderRepo.GetCartItems("caleb.huss@gmail.gov");
+
+                //Assert
+                Assert.NotNull(foundCartItems);
+                Assert.Equal(2, foundCartItems.Count);
+                Assert.Equal("caleb.huss@gmail.gov", foundCartItems[0].CartID);
+
+            }
+        }
+
+        [Fact]
+        public void EmptyCartShouldRemoveAllCartItems()
+        {
+
+        }
         private void Seed()
         {
             using (var context = new DBContext(_options))
@@ -319,11 +343,26 @@ namespace UnitTests
                         }
                     }
                 };
+                Cart cart1 = new Cart()
+                {
+                    RecordID = 1,
+                    CartID = "caleb.huss@gmail.gov",
+                    ProductID = 1,
+                    Quantity = 1
+                };
+                Cart cart2 = new Cart()
+                {
+                    RecordID = 2,
+                    CartID = "caleb.huss@gmail.gov",
+                    ProductID = 2,
+                    Quantity = 2
+                };
 
                 context.Products.AddRange(prod1, prod2);
                 context.Inventories.Add(inv1);
                 context.StoreInventories.AddRange(sInv1, sInv2);
                 context.Orders.Add(order1);
+                context.Carts.AddRange(cart1, cart2);
                 context.SaveChanges();
             }
         }

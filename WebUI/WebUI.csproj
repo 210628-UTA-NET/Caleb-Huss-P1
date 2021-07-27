@@ -1,6 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
+    <Compile Remove="Controllers\HomeController1.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj" />
     <ProjectReference Include="..\DL\DL.csproj" />
     <ProjectReference Include="..\BL\BL.csproj" />

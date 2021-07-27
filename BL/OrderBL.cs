@@ -30,5 +30,10 @@ namespace BL
         {
             return _repo.GetOrders(p_store, p_cust);
         }
+
+        public void MigrateCart(string p_email)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
