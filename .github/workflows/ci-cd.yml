@@ -22,7 +22,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-restore --verbosity normal
     - name: sonarscan-dotnet
       uses: highbyte/sonarscan-dotnet@v2.1.1-beta
       with:
