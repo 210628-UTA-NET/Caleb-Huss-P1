@@ -38,13 +38,6 @@ namespace UnitTests
                 };
                 Customers newCustomer = new Customers()
                 {
-                    FirstName = "Caleb",
-                    LastName = "Huss",
-                    Address = "123 main st",
-                    City = "Kansas City",
-                    State = "Kansas",
-                    Email = "caleb.huss@gmail.gov",
-                    PhoneNumber = 7851231234,
                     CustomerID = 1
                 };
 
@@ -54,7 +47,7 @@ namespace UnitTests
                 //Assert
                 Assert.NotNull(foundOrders[0]);
                 Assert.NotNull(foundOrders[0].StoreFront);
-                Assert.Single(foundOrders);
+                Assert.Equal(2, foundOrders.Count);
                 Assert.Equal(1, foundOrders[0].StoreFront.StoreNumber);
                 Assert.Equal(1, foundOrders[0].Customer.CustomerID);
                 Assert.Equal(2, foundOrders[0].ItemsList.Count);
@@ -82,7 +75,7 @@ namespace UnitTests
                 //Assert
                 Assert.NotNull(foundOrders[0]);
                 Assert.NotNull(foundOrders[0].StoreFront);
-                Assert.Single(foundOrders);
+                Assert.Equal(2, foundOrders.Count);
                 Assert.Equal(1, foundOrders[0].StoreFront.StoreNumber);
                 Assert.Equal(1, foundOrders[0].Customer.CustomerID);
                 Assert.Equal(2, foundOrders[0].ItemsList.Count);
@@ -113,7 +106,7 @@ namespace UnitTests
                 //Assert
                 Assert.NotNull(foundOrders[0]);
                 Assert.NotNull(foundOrders[0].StoreFront);
-                Assert.Single(foundOrders);
+                Assert.Equal(2,foundOrders.Count);
                 Assert.Equal(1, foundOrders[0].StoreFront.StoreNumber);
                 Assert.Equal(1, foundOrders[0].Customer.CustomerID);
                 Assert.Equal(2, foundOrders[0].ItemsList.Count);
@@ -185,7 +178,7 @@ namespace UnitTests
 
                 //Assert
                 Assert.NotNull(orderAdded);
-                Assert.Equal(2, orderAdded.OrderNum);
+                Assert.Equal(3, orderAdded.OrderNum);
                 Assert.Equal(1, orderAdded.StoreFront.StoreNumber);
                 Assert.Equal(1, orderAdded.Customer.CustomerID);
                 Assert.Equal(2, orderAdded.ItemsList.Count);
@@ -370,6 +363,37 @@ namespace UnitTests
                     PhoneNumber = 7851231234,
                     CustomerID = 1
                 };
+                LineItems line1 = new LineItems()
+                {
+                    LineItemID = 1,
+                    Product = prod1,
+                    Quantity = 1,
+                    OrdersOrderNum = 1
+                };
+
+                LineItems line2 = new LineItems()
+                {
+                    LineItemID = 2,
+                    Product = prod2,
+                    Quantity = 3,
+                    OrdersOrderNum = 1
+                };
+
+                LineItems line3 = new LineItems()
+                {
+                    LineItemID = 3,
+                    Product = prod1,
+                    Quantity = 1,
+                    OrdersOrderNum = 2
+                };
+
+                LineItems line4 = new LineItems()
+                {
+                    LineItemID = 4,
+                    Product = prod2,
+                    Quantity = 3,
+                    OrdersOrderNum = 2
+                };
                 Orders order1 = new Orders()
                 {
                     Date = new DateTime(2021, 7, 20, 5, 0, 0),
@@ -378,40 +402,20 @@ namespace UnitTests
                     Customer = cust1,
                     ItemsList = new List<LineItems>()
                     {
-                        new LineItems()
-                        {
-                            LineItemID = 1,
-                            Product = prod1,
-                            Quantity = 1
-                        },
-                        new LineItems()
-                        {   
-                            LineItemID = 2,
-                            Product = prod2,
-                            Quantity = 3
-                        }
+                        line1,line2
+                        
                     }
                 };
-                Orders order0 = new Orders()
+                Orders order2 = new Orders()
                 {
                     Date = new DateTime(2021, 7, 20, 5, 0, 0),
-                    OrderNum = 0,
+                    OrderNum = 2,
                     StoreFront = store1,
                     Customer = cust1,
                     ItemsList = new List<LineItems>()
                     {
-                        new LineItems()
-                        {
-                            LineItemID = 0,
-                            Product = prod1,
-                            Quantity = 1
-                        },
-                        new LineItems()
-                        {
-                            LineItemID = 3,
-                            Product = prod2,
-                            Quantity = 3
-                        }
+                        line3,line4
+                        
                     }
                 };
                 Cart cart1 = new Cart()
@@ -432,7 +436,8 @@ namespace UnitTests
                 context.Products.AddRange(prod1, prod2, prod3);
                 context.Inventories.Add(inv1);
                 context.StoreInventories.AddRange(sInv1, sInv2);
-                context.Orders.Add(order1);
+                context.LineItems.AddRange(line1,line2,line3,line4);
+                context.Orders.AddRange(order1,order2);
                 context.Carts.AddRange(cart1, cart2);
                 context.SaveChanges();
             }

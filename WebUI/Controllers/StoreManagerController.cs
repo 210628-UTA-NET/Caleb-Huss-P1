@@ -1,87 +1,44 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BL;
+using WebUI.Models;
+using Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace WebUI.Controllers
 {
     public class StoreManagerController : Controller
     {
-        // GET: StoreManagerController
-        public ActionResult Index()
+        private readonly IStoreBL _storeBL;
+        private readonly IInventoryBL _inventoryBL;
+        public StoreManagerController(IStoreBL p_storeBL, IInventoryBL p_inventoryBL)
+        {
+            _storeBL = p_storeBL;
+            _inventoryBL = p_inventoryBL;
+        }
+        public IActionResult Index()
         {
             return View();
         }
-
-        // GET: StoreManagerController/Details/5
-        public ActionResult Details(int id)
+        public IActionResult Stores()
         {
-            return View();
+            return View(
+                _storeBL.GetAllStores()
+                .Select(rest => new StoreFrontVM(rest))
+            );
+        }
+        public IActionResult Inventory(int p_num)
+        {
+            return View(
+                _inventoryBL.GetAllInventory(new StoreFront() { StoreNumber = p_num })
+                .Select(inv => new InventoryVM(inv))
+                .ToList()
+                );
         }
 
-        // GET: StoreManagerController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: StoreManagerController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: StoreManagerController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: StoreManagerController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: StoreManagerController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: StoreManagerController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

@@ -37,6 +37,7 @@ namespace BL
         /// <param name="p_email">The email of the user logged in</param>
         void MigrateCart(string p_email);
         
+        Orders GetAnOrder(int p_orderNum);
 
     }
 }

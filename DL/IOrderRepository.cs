@@ -46,5 +46,7 @@ namespace DL
         List<Cart> GetCartItems(string p_cartId);
 
         void MigrateCart(string p_email, string p_tempCartID);
+
+        Orders GetAnOrder(int p_orderNum);
     }
 }

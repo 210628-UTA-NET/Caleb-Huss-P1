@@ -82,9 +82,24 @@ namespace DL
             ).ToList();
             foreach (var item in cartItem)
             {
-                _context.Carts.Remove(item);   
+                _context.Carts.Remove(item);
             }
             _context.SaveChanges();
+        }
+
+        public Orders GetAnOrder(int p_orderNum)
+        {
+            return (from o in _context.Orders
+                    where o.OrderNum == p_orderNum
+                    select new Orders
+                    {
+                        OrderNum = o.OrderNum,
+                        Customer = o.Customer,
+                        StoreFront = o.StoreFront,
+                        Date = o.Date,
+                        ItemsList = o.ItemsList
+                    }
+            ).FirstOrDefault();
         }
 
         public List<Cart> GetCartItems(string p_cartId)
@@ -153,8 +168,8 @@ namespace DL
         public void MigrateCart(string p_email, string p_tempCartID)
         {
             var cartItems = (from c in _context.Carts
-                            where c.CartID == p_tempCartID
-                            select c   
+                             where c.CartID == p_tempCartID
+                             select c
             ).ToList();
 
             foreach (var item in cartItems)

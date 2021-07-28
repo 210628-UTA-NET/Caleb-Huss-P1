@@ -39,26 +39,6 @@ namespace Models
             tempList.Add(p_lineItem);
             this.ItemsList = tempList;
         }
-        public override string ToString()
-        {
-            string returner =($@"
-========================
-Beginning of Order
-========================
-====== Store Info ======
-{StoreFront}
-====== Customer Info ======
-{Customer}
-====== Order Info =====
-Order number: {OrderNum}
-Total Cost: ${TotalPrice.ToString("0.00")}");
-            foreach (LineItems item in ItemsList)
-            {
-                returner += "\n" + item.ToString() ;
-            }
-            return returner;
-
-        }
 
     }
 }
