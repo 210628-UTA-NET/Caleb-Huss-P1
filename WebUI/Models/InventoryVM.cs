@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Models;
 
 namespace WebUI.Models
@@ -23,5 +24,6 @@ namespace WebUI.Models
         public string Description { get; set; }
         public decimal Price { get; set; }
         public int Quantity { get; set; }
+        public string Email { get; set; }
     }
 }

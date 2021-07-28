@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<WebUI.Models.InventoryVM>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,12 +25,11 @@
                     <td>@Html.DisplayFor(modelItem => item.Description)</td>
                     <td>$@Html.DisplayFor(modelItem => item.Price)</td>
                     <td>@Html.DisplayFor(modelItem => item.Quantity) left</td>
-                    <td>@Html.ActionLink("Add To Cart", "AddCart", new { p_id = item.ProductID }, new { @style = "color:white", @class = "btn btn-secondary" })</td>
+                    <td>@Html.ActionLink("Edit Quantity", "Edit", new { p_id = item.ProductID }, new { @style = "color:white", @class = "btn btn-secondary" })</td>
                 </tr>
             }
         </tbody>
 
     </table>
-
 </body>
 </html>

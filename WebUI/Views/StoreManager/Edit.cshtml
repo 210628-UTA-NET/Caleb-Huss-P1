@@ -1,0 +1,22 @@
+﻿@model WebUI.Models.EditVM
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form asp-action="Edit">
+            <div class="mb-3">
+                <label asp-for="Quantity" class="form-label">Change quantity by how much?</label>
+                <input asp-for="Quantity" type="number" class="form-control" placeholder="12">
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+    </div>
+</body>
+</html>
