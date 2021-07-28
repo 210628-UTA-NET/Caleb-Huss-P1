@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BL;
 using WebUI.Models;
 using Models;
+using Microsoft.AspNetCore.Http;
 
 namespace WebUI.Controllers
 {
@@ -27,6 +28,11 @@ namespace WebUI.Controllers
         }
         public IActionResult Inventory(int p_num)
         {
+            
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("UserEmail")))
+            {
+                HttpContext.Session.SetInt32("CurrentStore", p_num);
+            } 
             return View(
                 _inventoryBL.GetAllInventory(new StoreFront() { StoreNumber = p_num })
                 .Select(inv => new InventoryVM(inv))

@@ -35,7 +35,7 @@ namespace BL
         /// <param name="p_email">the email the user provided</param>
         /// <param name="p_password">the password the user provided</param>
         /// <returns></returns>
-        Customers CheckCredentials(string p_email, string p_password);
+        Boolean CheckCredentials(string p_email, string p_password);
 
 
 

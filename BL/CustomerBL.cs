@@ -41,11 +41,11 @@ namespace BL
             return custAdded;
         }
 
-        public Customers CheckCredentials(string p_email, string p_password)
+        public Boolean CheckCredentials(string p_email, string p_password)
         {
 
             Customers searchedCustomer = _repo.GetCustomer(new Customers() { Email = p_email });
-            if (searchedCustomer.CustomerID > 0)
+            if (searchedCustomer.Email != null)
             {
                 UserLogin credToCheck = _repo.GetCredentials(searchedCustomer);
                 string checkHash = Convert.ToBase64String(KeyDerivation.Pbkdf2(
@@ -55,13 +55,13 @@ namespace BL
                     iterationCount: 10000,
                     numBytesRequested: 256 / 8
                 ));
-                if ((p_email == searchedCustomer.Email) && (checkHash == credToCheck.hash))
+                if ((p_email.ToLower() == searchedCustomer.Email.ToLower()) && (checkHash == credToCheck.hash))
                 {
-                    return searchedCustomer;
+                    return true;
                 }
             }
 
-            return new Customers();
+            return false;
         }
 
         public List<Customers> GetAllCustomers()
