@@ -57,6 +57,9 @@ namespace DL
             modelBuilder.Entity<Employee>()
                 .Property(employee => employee.EmployeeID)
                 .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Cart>()
+                .Property(cart => cart.RecordID)
+                .ValueGeneratedOnAdd();
         }
     }
 }

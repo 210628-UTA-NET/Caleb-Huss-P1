@@ -109,6 +109,7 @@ namespace DL
                     where c.CartID == p_cartId
                     select new Cart()
                     {
+                        CartID = p_cartId,
                         Quantity = c.Quantity,
                         Product = new Products()
                         {

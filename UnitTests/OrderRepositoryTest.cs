@@ -265,7 +265,7 @@ namespace UnitTests
 
                 //Assert
                 Assert.NotEmpty(newCart);
-                Assert.Equal(2, newCart[0].ProductID);
+                Assert.Single(newCart);
             }
         }
         private void Seed()
@@ -423,14 +423,16 @@ namespace UnitTests
                     RecordID = 1,
                     CartID = "caleb.huss@gmail.gov",
                     ProductID = 1,
-                    Quantity = 1
+                    Quantity = 1,
+                    Product = prod1
                 };
                 Cart cart2 = new Cart()
                 {
                     RecordID = 2,
                     CartID = "caleb.huss@gmail.gov",
                     ProductID = 2,
-                    Quantity = 2
+                    Quantity = 2,
+                    Product = prod2
                 };
 
                 context.Products.AddRange(prod1, prod2, prod3);
