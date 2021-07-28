@@ -36,8 +36,18 @@ namespace BL
         /// </summary>
         /// <param name="p_email">The email of the user logged in</param>
         void MigrateCart(string p_email);
-        
+        /// <summary>
+        /// Get a specific order based on order numver
+        /// </summary>
+        /// <param name="p_orderNum">Order to get</param>
+        /// <returns>Order with certain order number</returns>
         Orders GetAnOrder(int p_orderNum);
+
+        void AddToCart(LineItems p_lineitem, string p_cartId);
+        
+        void RemoveFromCart(int p_productid, string p_cartId);
+        void EmptyCart(string p_cartId);
+        List<Cart> GetCartItems(string p_cartId);
 
     }
 }

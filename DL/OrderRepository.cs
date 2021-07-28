@@ -105,8 +105,18 @@ namespace DL
         public List<Cart> GetCartItems(string p_cartId)
         {
             return (from c in _context.Carts
+                    join p in _context.Products on c.ProductID equals p.ProductID
                     where c.CartID == p_cartId
-                    select c
+                    select new Cart()
+                    {
+                        Quantity = c.Quantity,
+                        Product = new Products()
+                        {
+                            Name = p.Name,
+                            Price = p.Price,
+                            ProductID = p.ProductID
+                        }
+                    }
                     ).ToList();
         }
 
