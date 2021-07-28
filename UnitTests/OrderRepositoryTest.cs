@@ -38,13 +38,6 @@ namespace UnitTests
                 };
                 Customers newCustomer = new Customers()
                 {
-                    FirstName = "Caleb",
-                    LastName = "Huss",
-                    Address = "123 main st",
-                    City = "Kansas City",
-                    State = "Kansas",
-                    Email = "caleb.huss@gmail.gov",
-                    PhoneNumber = 7851231234,
                     CustomerID = 1
                 };
 
@@ -54,7 +47,7 @@ namespace UnitTests
                 //Assert
                 Assert.NotNull(foundOrders[0]);
                 Assert.NotNull(foundOrders[0].StoreFront);
-                Assert.Single(foundOrders);
+                Assert.Equal(2, foundOrders.Count);
                 Assert.Equal(1, foundOrders[0].StoreFront.StoreNumber);
                 Assert.Equal(1, foundOrders[0].Customer.CustomerID);
                 Assert.Equal(2, foundOrders[0].ItemsList.Count);
@@ -82,7 +75,7 @@ namespace UnitTests
                 //Assert
                 Assert.NotNull(foundOrders[0]);
                 Assert.NotNull(foundOrders[0].StoreFront);
-                Assert.Single(foundOrders);
+                Assert.Equal(2, foundOrders.Count);
                 Assert.Equal(1, foundOrders[0].StoreFront.StoreNumber);
                 Assert.Equal(1, foundOrders[0].Customer.CustomerID);
                 Assert.Equal(2, foundOrders[0].ItemsList.Count);
@@ -113,7 +106,7 @@ namespace UnitTests
                 //Assert
                 Assert.NotNull(foundOrders[0]);
                 Assert.NotNull(foundOrders[0].StoreFront);
-                Assert.Single(foundOrders);
+                Assert.Equal(2,foundOrders.Count);
                 Assert.Equal(1, foundOrders[0].StoreFront.StoreNumber);
                 Assert.Equal(1, foundOrders[0].Customer.CustomerID);
                 Assert.Equal(2, foundOrders[0].ItemsList.Count);
@@ -185,13 +178,96 @@ namespace UnitTests
 
                 //Assert
                 Assert.NotNull(orderAdded);
-                Assert.Equal(2, orderAdded.OrderNum);
+                Assert.Equal(3, orderAdded.OrderNum);
                 Assert.Equal(1, orderAdded.StoreFront.StoreNumber);
                 Assert.Equal(1, orderAdded.Customer.CustomerID);
                 Assert.Equal(2, orderAdded.ItemsList.Count);
             }  
         }
 
+        [Fact]
+        public void GetCartItemsShouldGetCartItems()
+        {
+            using (var context = new DBContext(_options))
+            {
+                //Arrange
+                IOrderRepository orderRepo = new OrderRepository(context);
+
+                //Act
+                List<Cart> foundCartItems = orderRepo.GetCartItems("caleb.huss@gmail.gov");
+
+                //Assert
+                Assert.NotNull(foundCartItems);
+                Assert.Equal(2, foundCartItems.Count);
+                Assert.Equal("caleb.huss@gmail.gov", foundCartItems[0].CartID);
+
+            }
+        }
+
+        [Fact]
+        public void EmptyCartShouldRemoveAllCartItems()
+        {
+            using (var context = new DBContext(_options))
+            {
+                //Arrange
+                IOrderRepository orderRepo = new OrderRepository(context);
+                string cartID = "caleb.huss@gmail.gov";
+
+                //Act
+                List<Cart> preRemovedItems = orderRepo.GetCartItems(cartID);
+                orderRepo.EmptyCart(cartID);
+                List<Cart> postRemovedItems = orderRepo.GetCartItems(cartID);
+
+                //Assert
+                Assert.NotEmpty(preRemovedItems);
+                Assert.Empty(postRemovedItems);
+            }
+        }
+
+        [Theory]
+        [InlineData(1,1,2,2)]
+        [InlineData(3, 5, 3,5)]
+        public void AddToCartShouldAddItemToCart(int p_productId, int p_quantity, int p_expectedLength, int p_expectQuantity)
+        {
+            using (var context = new DBContext(_options))
+            {
+                //Arrange
+                IOrderRepository orderRepo = new OrderRepository(context);
+                string cartID = "caleb.huss@gmail.gov";
+                LineItems newLineItem = new LineItems()
+                {
+                    Product = new Products() {ProductID = p_productId},
+                    Quantity = p_quantity
+                };
+                //Act
+                orderRepo.AddToCart(newLineItem, cartID);
+                List<Cart> getCart = orderRepo.GetCartItems(cartID);
+
+                //Assert
+                Assert.NotEmpty(getCart);
+                Assert.Equal(p_expectedLength, getCart.Count);
+                Assert.Equal(p_expectQuantity, getCart[getCart.Count-1].Quantity);
+            }
+        }
+        [Fact]
+        public void RemoveFromCartShouldRemoveItemFromCart()
+        {
+            using (var context = new DBContext(_options))
+            {
+                //Arrange
+                IOrderRepository orderRepo = new OrderRepository(context);
+                int productToRemove = 1;
+                string cartID = "caleb.huss@gmail.gov";
+
+                //Act
+                orderRepo.RemoveFromCart(productToRemove, cartID);
+                List<Cart> newCart = orderRepo.GetCartItems(cartID);
+
+                //Assert
+                Assert.NotEmpty(newCart);
+                Assert.Single(newCart);
+            }
+        }
         private void Seed()
         {
             using (var context = new DBContext(_options))
@@ -239,6 +315,18 @@ namespace UnitTests
                             cat3
                         }
                 };
+                Products prod3 = new Products
+                {
+                    Name = "RootBeer3",
+                    Price = 3.99m,
+                    Description = "desc 3",
+                    ProductID = 3,
+                    Categories = new List<Categories>
+                        {
+                            cat2,
+                            cat3
+                        }
+                };
                 StoreFront store1 = new StoreFront()
                 {
                     Name = "StorePlace1",
@@ -275,6 +363,37 @@ namespace UnitTests
                     PhoneNumber = 7851231234,
                     CustomerID = 1
                 };
+                LineItems line1 = new LineItems()
+                {
+                    LineItemID = 1,
+                    Product = prod1,
+                    Quantity = 1,
+                    OrdersOrderNum = 1
+                };
+
+                LineItems line2 = new LineItems()
+                {
+                    LineItemID = 2,
+                    Product = prod2,
+                    Quantity = 3,
+                    OrdersOrderNum = 1
+                };
+
+                LineItems line3 = new LineItems()
+                {
+                    LineItemID = 3,
+                    Product = prod1,
+                    Quantity = 1,
+                    OrdersOrderNum = 2
+                };
+
+                LineItems line4 = new LineItems()
+                {
+                    LineItemID = 4,
+                    Product = prod2,
+                    Quantity = 3,
+                    OrdersOrderNum = 2
+                };
                 Orders order1 = new Orders()
                 {
                     Date = new DateTime(2021, 7, 20, 5, 0, 0),
@@ -283,47 +402,45 @@ namespace UnitTests
                     Customer = cust1,
                     ItemsList = new List<LineItems>()
                     {
-                        new LineItems()
-                        {
-                            LineItemID = 1,
-                            Product = prod1,
-                            Quantity = 1
-                        },
-                        new LineItems()
-                        {   
-                            LineItemID = 2,
-                            Product = prod2,
-                            Quantity = 3
-                        }
+                        line1,line2
+                        
                     }
                 };
-                Orders order0 = new Orders()
+                Orders order2 = new Orders()
                 {
                     Date = new DateTime(2021, 7, 20, 5, 0, 0),
-                    OrderNum = 0,
+                    OrderNum = 2,
                     StoreFront = store1,
                     Customer = cust1,
                     ItemsList = new List<LineItems>()
                     {
-                        new LineItems()
-                        {
-                            LineItemID = 0,
-                            Product = prod1,
-                            Quantity = 1
-                        },
-                        new LineItems()
-                        {
-                            LineItemID = 3,
-                            Product = prod2,
-                            Quantity = 3
-                        }
+                        line3,line4
+                        
                     }
                 };
+                Cart cart1 = new Cart()
+                {
+                    RecordID = 1,
+                    CartID = "caleb.huss@gmail.gov",
+                    ProductID = 1,
+                    Quantity = 1,
+                    Product = prod1
+                };
+                Cart cart2 = new Cart()
+                {
+                    RecordID = 2,
+                    CartID = "caleb.huss@gmail.gov",
+                    ProductID = 2,
+                    Quantity = 2,
+                    Product = prod2
+                };
 
-                context.Products.AddRange(prod1, prod2);
+                context.Products.AddRange(prod1, prod2, prod3);
                 context.Inventories.Add(inv1);
                 context.StoreInventories.AddRange(sInv1, sInv2);
-                context.Orders.Add(order1);
+                context.LineItems.AddRange(line1,line2,line3,line4);
+                context.Orders.AddRange(order1,order2);
+                context.Carts.AddRange(cart1, cart2);
                 context.SaveChanges();
             }
         }

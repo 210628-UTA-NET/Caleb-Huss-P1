@@ -21,6 +21,7 @@ namespace WebUI.Models
             Email = p_cust.Email;
             PhoneNumber = p_cust.PhoneNumber;
             CustomerID = p_cust.CustomerID;
+
         }
         public int CustomerID { get; set; }
         public string FirstName { get; set; }

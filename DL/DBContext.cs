@@ -22,12 +22,12 @@ namespace DL
         public DbSet<StoreInventory> StoreInventories { get; set; }
         public DbSet<UserLogin> UserLogin { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Cart> Carts { get; set; }
         public DBContext() : base()
         { }
 
         public DBContext(DbContextOptions options) : base(options)
         { }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -56,6 +56,9 @@ namespace DL
                 .HasKey(inv => new { inv.ProductID, inv.InventoryID });
             modelBuilder.Entity<Employee>()
                 .Property(employee => employee.EmployeeID)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Cart>()
+                .Property(cart => cart.RecordID)
                 .ValueGeneratedOnAdd();
         }
     }

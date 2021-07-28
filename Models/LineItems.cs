@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
 namespace Models
@@ -9,6 +10,8 @@ namespace Models
         public int LineItemID { get; set; }
         public Products Product{ get; set; }
         public int Quantity{ get; set; }
+        [ForeignKey("Orders")]
+        public int OrdersOrderNum { get; set; }
         
         public override string ToString()
         {
