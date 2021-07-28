@@ -50,8 +50,12 @@ namespace WebUI.Controllers
         [HttpPost]
         public IActionResult Edit(EditVM editVM)
         {
-            LineItems newLine = new LineItems()
+            try
             {
+                if (ModelState.IsValid)
+                {
+                LineItems newLine = new LineItems()
+                {
                 Quantity = editVM.Quantity,
                 Product = new Products()
                 {
@@ -64,6 +68,15 @@ namespace WebUI.Controllers
             };
             _inventoryBL.ChangeInventory(newStore,newLine);
             return RedirectToAction(nameof(Index));
+                }
+            }catch (Exception)
+            {
+                return View();
+            }
+            return View();
+
+
+            
         }
         public IActionResult Orders(int p_num)
         {

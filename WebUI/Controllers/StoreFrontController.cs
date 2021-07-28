@@ -38,6 +38,10 @@ namespace WebUI.Controllers
         }
         public IActionResult AddCart(int p_id)
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserEmail")))
+            {
+                return RedirectToAction("Login","Customer");
+            }
             LineItems newLine = new LineItems()
             {
                 Quantity = 1,
