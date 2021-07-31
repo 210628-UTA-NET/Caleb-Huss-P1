@@ -35,11 +35,7 @@ namespace DL
             return (from o in _context.Orders
                     where o.Customer.CustomerID == p_order.Customer.CustomerID
                     orderby o.OrderNum descending
-                    select new Orders
-                    {
-                        OrderNum = o.OrderNum,
-                    }
-
+                    select o
             ).FirstOrDefault();
         }
 
