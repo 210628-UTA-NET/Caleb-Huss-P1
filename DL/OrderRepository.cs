@@ -27,23 +27,17 @@ namespace DL
             _context.SaveChanges();
             foreach (LineItems prod in p_order.ItemsList)
             {
-                prod.Quantity = prod.Quantity * -1;
-                invRepo.ChangeInventory(p_order.StoreFront, prod);
+                LineItems newLI = new LineItems(){ Product = prod.Product, Quantity = prod.Quantity * -1 };
+
+                invRepo.ChangeInventory(p_order.StoreFront, newLI);
             }
 
             return (from o in _context.Orders
-                    join c in _context.Customers on o.Customer.CustomerID equals c.CustomerID
-                    join s in _context.Stores on o.StoreFront.StoreNumber equals s.StoreNumber
-                    where o.Customer.CustomerID == p_order.Customer.CustomerID &&
-                          o.StoreFront.StoreNumber == p_order.StoreFront.StoreNumber
+                    where o.Customer.CustomerID == p_order.Customer.CustomerID
                     orderby o.OrderNum descending
                     select new Orders
                     {
                         OrderNum = o.OrderNum,
-                        Customer = o.Customer,
-                        StoreFront = o.StoreFront,
-                        Date = o.Date,
-                        ItemsList = o.ItemsList
                     }
 
             ).FirstOrDefault();

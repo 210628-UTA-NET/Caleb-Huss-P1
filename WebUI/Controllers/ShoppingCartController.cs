@@ -14,10 +14,12 @@ namespace WebUI.Controllers
     {
         private readonly IOrderBL _orderBL;
         private readonly ICustomerBL _custBL;
-        public ShoppingCartController(IOrderBL p_orderBL, ICustomerBL p_custBL)
+        private readonly IStoreBL _storeBL;
+        public ShoppingCartController(IOrderBL p_orderBL, ICustomerBL p_custBL, IStoreBL p_storeBL)
         {
             _orderBL = p_orderBL;
             _custBL = p_custBL;
+            _storeBL = p_storeBL;
         }
         public IActionResult Index()
         {
@@ -32,6 +34,10 @@ namespace WebUI.Controllers
         }
         public IActionResult PlaceOrder()
         {
+            if(string.IsNullOrEmpty(HttpContext.Session.GetString("UserEmail")))
+            {
+                return RedirectToAction(nameof(Index));
+            }
             List<Cart> cartItems = _orderBL.GetCartItems(HttpContext.Session.GetString("UserEmail"));
             Orders newOrder = new Orders();
             newOrder.Date = DateTime.Now;
@@ -39,6 +45,8 @@ namespace WebUI.Controllers
             {
                 Email = HttpContext.Session.GetString("UserEmail")
             });
+            newOrder.StoreFront = _storeBL.GetStoreFront(new StoreFront() { StoreNumber = 1 });
+            List<LineItems> tempList = new List<LineItems>();
             foreach (Cart item in cartItems)
             {
                 LineItems newLine = new LineItems()
@@ -46,8 +54,9 @@ namespace WebUI.Controllers
                     Product = item.Product,
                     Quantity = item.Quantity
                 };
-                newOrder.AddLineItem(newLine);
+                tempList.Add(newLine);
             }
+            newOrder.ItemsList = tempList;
             _orderBL.AddOrder(newOrder);
             _orderBL.EmptyCart(HttpContext.Session.GetString("UserEmail"));
             return View();
