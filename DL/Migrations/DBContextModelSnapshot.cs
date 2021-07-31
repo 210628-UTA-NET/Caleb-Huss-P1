@@ -53,9 +53,14 @@ namespace DL.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<int?>("StoreFront")
+                        .HasColumnType("int");
+
                     b.HasKey("RecordID");
 
                     b.HasIndex("ProductID");
+
+                    b.HasIndex("StoreFront");
 
                     b.ToTable("Carts");
                 });
@@ -152,7 +157,7 @@ namespace DL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("OrdersOrderNum")
+                    b.Property<int>("OrdersOrderNum")
                         .HasColumnType("int");
 
                     b.Property<int?>("ProductID")
@@ -297,7 +302,13 @@ namespace DL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Models.StoreFront", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreFront");
+
                     b.Navigation("Product");
+
+                    b.Navigation("Store");
                 });
 
             modelBuilder.Entity("Models.Employee", b =>
@@ -322,10 +333,12 @@ namespace DL.Migrations
                 {
                     b.HasOne("Models.Orders", null)
                         .WithMany("ItemsList")
-                        .HasForeignKey("OrdersOrderNum");
+                        .HasForeignKey("OrdersOrderNum")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Models.Products", "Product")
-                        .WithMany()
+                        .WithMany("LineItem")
                         .HasForeignKey("ProductID");
 
                     b.Navigation("Product");
@@ -386,6 +399,11 @@ namespace DL.Migrations
             modelBuilder.Entity("Models.Orders", b =>
                 {
                     b.Navigation("ItemsList");
+                });
+
+            modelBuilder.Entity("Models.Products", b =>
+                {
+                    b.Navigation("LineItem");
                 });
 
             modelBuilder.Entity("Models.StoreFront", b =>

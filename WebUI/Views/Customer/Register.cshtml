@@ -36,7 +36,7 @@
             </div>
             <div class="mb-3">
                 <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
-                <input asp-for="PhoneNumber" type="number" class="form-control">
+                <input asp-for="PhoneNumber" type="number" class="form-control" placeholder="1234567890">
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
             <div class="mb-3">
@@ -45,7 +45,7 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="Password" class="form-label">Password</label>
+                <label asp-for="Password" class="form-label">Password (don't use a real password*)</label>
                 <input asp-for="Password" type="password" class="form-control">
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
@@ -53,5 +53,6 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
+    <p>* Although passwords are salted and hashed before being stored in the database, the process before that is unencrypted and open to having and data stolen</p>
 </body>
 </html>

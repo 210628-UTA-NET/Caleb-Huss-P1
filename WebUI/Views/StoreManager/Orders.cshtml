@@ -13,6 +13,8 @@
                 <th>Order Number</th>
                 <th>Number of Items</th>
                 <th>Date</th>
+                <th>Cost</th>
+                <th>Details</th>
 
             </tr>
         </thead>
@@ -23,7 +25,8 @@
                     <td>@Html.DisplayFor(modelItem => item.OrderNumber)</td>
                     <td>@Html.DisplayFor(modelItem => item.ItemCount)</td>
                     <td>@Html.DisplayFor(modelItem => item.Date)</td>
-
+                    <td>$@Html.DisplayFor(modelItem => item.Cost)</td>
+                    <td>@Html.ActionLink("View","OrderDetails", new { p_orderNum = item.OrderNumber}, new { @style = "color:white", @class = "btn btn-secondary" })</td>
                 </tr>
             }
         </tbody>

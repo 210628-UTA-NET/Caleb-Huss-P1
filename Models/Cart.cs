@@ -12,6 +12,8 @@ namespace Models
         public int RecordID { get; set; }
         public string CartID { get; set; }
         public int ProductID { get; set; }
+        [ForeignKey("StoreFront")]
+        public StoreFront Store { get; set; }
         public int Quantity { get; set; }
         public DateTime DateMade { get; set; }
         public Products Product { get; set; }

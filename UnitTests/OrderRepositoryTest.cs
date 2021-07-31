@@ -110,6 +110,7 @@ namespace UnitTests
                 Assert.Equal(1, foundOrders[0].StoreFront.StoreNumber);
                 Assert.Equal(1, foundOrders[0].Customer.CustomerID);
                 Assert.Equal(2, foundOrders[0].ItemsList.Count);
+                Assert.Equal(1, foundOrders[0].ItemsList[0].Product.ProductID);
             }
         }
         [Fact]
@@ -266,6 +267,23 @@ namespace UnitTests
                 //Assert
                 Assert.NotEmpty(newCart);
                 Assert.Single(newCart);
+            }
+        }
+        [Fact]
+        public void GetAnOrderShouldGetAnOrder()
+        {
+            using (var context = new DBContext(_options))
+            {
+                //Arrange
+                IOrderRepository orderRepo = new OrderRepository(context);
+                int orderToGet = 1;
+                //Act
+                Orders gotOrder = orderRepo.GetAnOrder(orderToGet);
+
+                //Assert
+                Assert.NotNull(gotOrder);
+                Assert.Equal(2, gotOrder.ItemsList.Count);
+                Assert.Equal("RootBeer1", gotOrder.ItemsList[0].Product.Name);
             }
         }
         private void Seed()

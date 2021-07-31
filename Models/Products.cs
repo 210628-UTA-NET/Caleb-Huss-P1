@@ -12,6 +12,7 @@ namespace Models
         [Key]
         public int ProductID { get; set; }
         public List<Categories> Categories { get; set; }
+        public List<LineItems> LineItem { get; set; }
 
         public override string ToString()
         {

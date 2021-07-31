@@ -5,6 +5,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Views\StoreManager\OrderDetails.chtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj" />
     <ProjectReference Include="..\DL\DL.csproj" />
     <ProjectReference Include="..\BL\BL.csproj" />

@@ -30,6 +30,7 @@ namespace WebUI.Controllers
         }
         public IActionResult Inventory(int p_num)
         {
+            HttpContext.Session.SetInt32("StoreNum", p_num);
             return View(
                 _inventoryBL.GetAllInventory(new StoreFront() { StoreNumber = p_num })
                 .Select(inv => new InventoryVM(inv))
@@ -51,7 +52,7 @@ namespace WebUI.Controllers
                 }
             };
             _orderBL.AddToCart(newLine, HttpContext.Session.GetString("UserEmail"));
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Inventory));
         }
     }
 }

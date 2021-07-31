@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DL.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20210726184318_employee")]
-    partial class employee
+    [Migration("20210731201612_newdb")]
+    partial class newdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,6 +34,32 @@ namespace DL.Migrations
                     b.HasIndex("ProductsProductID");
 
                     b.ToTable("CategoriesProducts");
+                });
+
+            modelBuilder.Entity("Models.Cart", b =>
+                {
+                    b.Property<int>("RecordID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CartID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateMade")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("RecordID");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("Models.Categories", b =>
@@ -99,7 +125,7 @@ namespace DL.Migrations
 
                     b.HasIndex("CustomerID");
 
-                    b.ToTable("Employee");
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("Models.Inventory", b =>
@@ -128,7 +154,7 @@ namespace DL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("OrdersOrderNum")
+                    b.Property<int>("OrdersOrderNum")
                         .HasColumnType("int");
 
                     b.Property<int?>("ProductID")
@@ -265,6 +291,17 @@ namespace DL.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Models.Cart", b =>
+                {
+                    b.HasOne("Models.Products", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Models.Employee", b =>
                 {
                     b.HasOne("Models.Customers", "Customer")
@@ -287,10 +324,12 @@ namespace DL.Migrations
                 {
                     b.HasOne("Models.Orders", null)
                         .WithMany("ItemsList")
-                        .HasForeignKey("OrdersOrderNum");
+                        .HasForeignKey("OrdersOrderNum")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Models.Products", "Product")
-                        .WithMany()
+                        .WithMany("LineItem")
                         .HasForeignKey("ProductID");
 
                     b.Navigation("Product");
@@ -351,6 +390,11 @@ namespace DL.Migrations
             modelBuilder.Entity("Models.Orders", b =>
                 {
                     b.Navigation("ItemsList");
+                });
+
+            modelBuilder.Entity("Models.Products", b =>
+                {
+                    b.Navigation("LineItem");
                 });
 
             modelBuilder.Entity("Models.StoreFront", b =>
