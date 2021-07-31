@@ -10,7 +10,7 @@ namespace WebUI.Models
 
         public int OrderNumber { get; set; }
         public int ItemCount { get; set; }
-        //public decimal Cost { get; set; }
+        public decimal Cost { get; set; }
         public DateTime Date { get; set; }
     }
 }

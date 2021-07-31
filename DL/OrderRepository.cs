@@ -89,7 +89,7 @@ namespace DL
 
         public Orders GetAnOrder(int p_orderNum)
         {
-            return (from o in _context.Orders
+             Orders foundOrder = (from o in _context.Orders
                     where o.OrderNum == p_orderNum
                     select new Orders
                     {
@@ -97,8 +97,23 @@ namespace DL
                         Customer = o.Customer,
                         StoreFront = o.StoreFront,
                         Date = o.Date
-                    }
-            ).FirstOrDefault();
+                    }).FirstOrDefault();
+            int oNum = foundOrder.OrderNum;
+            foundOrder.ItemsList = (from li in _context.LineItems
+                                   join p in _context.Products on li.Product.ProductID equals p.ProductID
+                                   where li.OrdersOrderNum == oNum
+                                   select new LineItems()
+                                   {
+                                     Product = new  Products(){
+                                     Name = p.Name,
+                                     Description = p.Description,
+                                     Price = p.Price,
+                                     ProductID = p.ProductID
+                                     },
+                                     Quantity = li.Quantity
+                                   }
+                ).ToList();
+            return foundOrder;
         }
 
         public List<Cart> GetCartItems(string p_cartId)
@@ -227,5 +242,6 @@ namespace DL
                 _context.SaveChanges();
             }
         }
+        
     }
 }

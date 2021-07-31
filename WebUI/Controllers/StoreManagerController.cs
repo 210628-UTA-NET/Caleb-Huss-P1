@@ -73,10 +73,7 @@ namespace WebUI.Controllers
             {
                 return View();
             }
-            return View();
-
-
-            
+            return View();  
         }
         public IActionResult Orders(int p_num)
         {
@@ -99,15 +96,26 @@ namespace WebUI.Controllers
                 ordervm.Add(new OrderVM()
                 {
                     OrderNumber = item.OrderNum,
-                    //Cost = item.TotalPrice,
+                    Cost = item.TotalPrice,
                     ItemCount = q,
                     Date = item.Date
                 });
 
             }
-
             return View(ordervm);
         }
 
+        public IActionResult OrderDetails(int p_orderNum)
+        {
+
+            Orders sOrder = _orderBL.GetAnOrder(p_orderNum);
+            List<LineItemVM> lineitemsVM = new List<LineItemVM>();
+            foreach (LineItems item in sOrder.ItemsList)
+            {
+                lineitemsVM.Add(new LineItemVM(item));
+            }
+
+            return View(lineitemsVM);
+        }
     }
 }

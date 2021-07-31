@@ -135,13 +135,9 @@ namespace WebUI.Controllers
 
             return View(ordervm);
         }
-        public IActionResult OrderDetails(int p_num)
+        public IActionResult OrderDetails(int p_orderNum)
         {
-            Customers cust = new Customers()
-            {
-                Email = HttpContext.Session.GetString("UserEmail")
-            };
-            Orders sOrder = _orderBL.GetAnOrder(p_num);
+            Orders sOrder = _orderBL.GetAnOrder(p_orderNum);
             List<LineItemVM> lineitemsVM = new List<LineItemVM>();
             foreach (LineItems item in sOrder.ItemsList)
             {
