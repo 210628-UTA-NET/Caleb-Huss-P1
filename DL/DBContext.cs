@@ -28,10 +28,7 @@ namespace DL
 
         public DBContext(DbContextOptions options) : base(options)
         { }
-        // protected override void OnConfiguring(DbContextOptionsBuilder p_options)
-        // { 
-        //     p_options.UseSqlServer("Server=tcp:calebhrev.database.windows.net,1433;Initial Catalog=DemoDB;Persist Security Info=False;User ID=CalebHuss;Password=8675CBL!!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=20;");
-        // }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
