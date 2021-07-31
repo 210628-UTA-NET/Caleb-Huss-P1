@@ -96,8 +96,7 @@ namespace DL
                         OrderNum = o.OrderNum,
                         Customer = o.Customer,
                         StoreFront = o.StoreFront,
-                        Date = o.Date,
-                        ItemsList = o.ItemsList
+                        Date = o.Date
                     }
             ).FirstOrDefault();
         }
@@ -133,9 +132,20 @@ namespace DL
                                             Customer = o.Customer,
                                             StoreFront = o.StoreFront,
                                             Date = o.Date,
-                                            ItemsList = o.ItemsList
                                         }
             ).ToList();
+            foreach (Orders order in ordersFound)
+            {
+                order.ItemsList = (from li in _context.LineItems
+                                   join p in _context.Products on li.Product.ProductID equals p.ProductID
+                                   where li.OrdersOrderNum == order.OrderNum
+                                   select new LineItems()
+                                   {
+                                     Product = li.Product,
+                                     Quantity = li.Quantity
+                                   }
+                ).ToList();
+            }
             return ordersFound;
         }
 
@@ -151,14 +161,31 @@ namespace DL
                                             Customer = o.Customer,
                                             StoreFront = o.StoreFront,
                                             Date = o.Date,
-                                            ItemsList = o.ItemsList
                                         }
             ).ToList();
+            foreach (Orders order in ordersFound)
+            {
+                order.ItemsList = (from li in _context.LineItems
+                                   join p in _context.Products on li.Product.ProductID equals p.ProductID
+                                   where li.OrdersOrderNum == order.OrderNum
+                                   select new LineItems()
+                                   {
+                                     Product = li.Product,
+                                     Quantity = li.Quantity
+                                   }
+                ).ToList();
+            }
+
             return ordersFound;
         }
 
         public List<Orders> GetOrders(StoreFront p_store, Customers p_cust)
         {
+            // try just getting order with customer ID
+            //_context.Include(item => item).ThenInclude(item => item.product)
+            //return _context.Orders.Include(order => order.Items).ThenInclude(item => item.Product).Where(order => order.StoreFrontID == p_storeID).ToList();
+
+
             List<Orders> ordersFound = (from o in _context.Orders
                                         join c in _context.Customers on o.Customer.CustomerID equals c.CustomerID
                                         join s in _context.Stores on o.StoreFront.StoreNumber equals s.StoreNumber
@@ -170,24 +197,21 @@ namespace DL
                                             Customer = o.Customer,
                                             StoreFront = o.StoreFront,
                                             Date = o.Date,
-                                            ItemsList = o.ItemsList
                                         }
             ).ToList();
-            return ordersFound;
-        }
-
-        public void MigrateCart(string p_email, string p_tempCartID)
-        {
-            var cartItems = (from c in _context.Carts
-                             where c.CartID == p_tempCartID
-                             select c
-            ).ToList();
-
-            foreach (var item in cartItems)
+            foreach (Orders order in ordersFound)
             {
-                item.CartID = p_email;
+                order.ItemsList = (from li in _context.LineItems
+                                   join p in _context.Products on li.Product.ProductID equals p.ProductID
+                                   where li.OrdersOrderNum == order.OrderNum
+                                   select new LineItems()
+                                   {
+                                     Product = li.Product,
+                                     Quantity = li.Quantity
+                                   }
+                ).ToList();
             }
-            _context.SaveChanges();
+            return ordersFound;
         }
 
         public void RemoveFromCart(int p_productid, string p_cartId)

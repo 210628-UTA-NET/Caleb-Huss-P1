@@ -110,6 +110,7 @@ namespace UnitTests
                 Assert.Equal(1, foundOrders[0].StoreFront.StoreNumber);
                 Assert.Equal(1, foundOrders[0].Customer.CustomerID);
                 Assert.Equal(2, foundOrders[0].ItemsList.Count);
+                Assert.Equal(1, foundOrders[0].ItemsList[0].Product.ProductID);
             }
         }
         [Fact]

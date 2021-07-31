@@ -24,9 +24,5 @@ namespace Models
         {
             OrderList.Add(p_order);
         }
-        public override string ToString()
-        {
-            return $"Name: {FirstName} {LastName}, Phonenumber: {PhoneNumber}, Email: {Email}, CustomerID: {CustomerID}, \nAddress: {Address}, City: {City}, State: {State}";
-        }
     }
 }

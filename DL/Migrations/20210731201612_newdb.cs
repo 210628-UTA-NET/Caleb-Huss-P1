@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DL.Migrations
 {
-    public partial class Intial : Migration
+    public partial class newdb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -71,6 +71,25 @@ namespace DL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Employees",
+                columns: table => new
+                {
+                    EmployeeID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CustomerID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employees", x => x.EmployeeID);
+                    table.ForeignKey(
+                        name: "FK_Employees_Customers_CustomerID",
+                        column: x => x.CustomerID,
+                        principalTable: "Customers",
+                        principalColumn: "CustomerID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserLogin",
                 columns: table => new
                 {
@@ -86,6 +105,28 @@ namespace DL.Migrations
                         column: x => x.CustomerID,
                         principalTable: "Customers",
                         principalColumn: "CustomerID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Carts",
+                columns: table => new
+                {
+                    RecordID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CartID = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProductID = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    DateMade = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Carts", x => x.RecordID);
+                    table.ForeignKey(
+                        name: "FK_Carts_Products_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Products",
+                        principalColumn: "ProductID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -114,7 +155,7 @@ namespace DL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Inventory",
+                name: "Inventories",
                 columns: table => new
                 {
                     InventoryID = table.Column<int>(type: "int", nullable: false)
@@ -123,9 +164,9 @@ namespace DL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Inventory", x => x.InventoryID);
+                    table.PrimaryKey("PK_Inventories", x => x.InventoryID);
                     table.ForeignKey(
-                        name: "FK_Inventory_Stores_StoreFront",
+                        name: "FK_Inventories_Stores_StoreFront",
                         column: x => x.StoreFront,
                         principalTable: "Stores",
                         principalColumn: "StoreNumber",
@@ -160,7 +201,7 @@ namespace DL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "StoreInventory",
+                name: "StoreInventories",
                 columns: table => new
                 {
                     InventoryID = table.Column<int>(type: "int", nullable: false),
@@ -169,15 +210,15 @@ namespace DL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StoreInventory", x => new { x.ProductID, x.InventoryID });
+                    table.PrimaryKey("PK_StoreInventories", x => new { x.ProductID, x.InventoryID });
                     table.ForeignKey(
-                        name: "FK_StoreInventory_Inventory_InventoryID",
+                        name: "FK_StoreInventories_Inventories_InventoryID",
                         column: x => x.InventoryID,
-                        principalTable: "Inventory",
+                        principalTable: "Inventories",
                         principalColumn: "InventoryID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_StoreInventory_Products_ProductID",
+                        name: "FK_StoreInventories_Products_ProductID",
                         column: x => x.ProductID,
                         principalTable: "Products",
                         principalColumn: "ProductID",
@@ -192,7 +233,7 @@ namespace DL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductID = table.Column<int>(type: "int", nullable: true),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    OrdersOrderNum = table.Column<int>(type: "int", nullable: true)
+                    OrdersOrderNum = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -202,7 +243,7 @@ namespace DL.Migrations
                         column: x => x.OrdersOrderNum,
                         principalTable: "Orders",
                         principalColumn: "OrderNum",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_LineItems_Products_ProductID",
                         column: x => x.ProductID,
@@ -212,13 +253,23 @@ namespace DL.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Carts_ProductID",
+                table: "Carts",
+                column: "ProductID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CategoriesProducts_ProductsProductID",
                 table: "CategoriesProducts",
                 column: "ProductsProductID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Inventory_StoreFront",
-                table: "Inventory",
+                name: "IX_Employees_CustomerID",
+                table: "Employees",
+                column: "CustomerID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Inventories_StoreFront",
+                table: "Inventories",
                 column: "StoreFront",
                 unique: true,
                 filter: "[StoreFront] IS NOT NULL");
@@ -244,21 +295,27 @@ namespace DL.Migrations
                 column: "StoreFrontStoreNumber");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StoreInventory_InventoryID",
-                table: "StoreInventory",
+                name: "IX_StoreInventories_InventoryID",
+                table: "StoreInventories",
                 column: "InventoryID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Carts");
+
+            migrationBuilder.DropTable(
                 name: "CategoriesProducts");
+
+            migrationBuilder.DropTable(
+                name: "Employees");
 
             migrationBuilder.DropTable(
                 name: "LineItems");
 
             migrationBuilder.DropTable(
-                name: "StoreInventory");
+                name: "StoreInventories");
 
             migrationBuilder.DropTable(
                 name: "UserLogin");
@@ -270,7 +327,7 @@ namespace DL.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "Inventory");
+                name: "Inventories");
 
             migrationBuilder.DropTable(
                 name: "Products");
