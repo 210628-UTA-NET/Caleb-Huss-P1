@@ -28,7 +28,7 @@
                 <td>@Html.DisplayFor(modelItem => item.State)</td>
                 <td>@Html.DisplayFor(modelItem => item.StoreNumber)</td>
                 <td>@Html.ActionLink("View Inventory", "Inventory", new { p_num = item.StoreNumber }, new { @style = "color:white", @class = "btn btn-secondary" })</td>
-                <td>@Html.ActionLink("View Orders", "Orders", new { p_num = item.StoreNumber }, new { @style = "color:white", @class = "btn btn-secondary" })</td>
+                <td>@Html.ActionLink("View Orders", "Orders", new { p_num = item.StoreNumber, p_sort = "date_desc"}, new { @style = "color:white", @class = "btn btn-secondary" })</td>
             </tr>
             }
         </tbody>
