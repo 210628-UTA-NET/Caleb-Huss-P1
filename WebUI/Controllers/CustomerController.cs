@@ -103,7 +103,7 @@ namespace WebUI.Controllers
             return RedirectToAction(nameof(Index));
 
         }
-        public IActionResult OrderHistory()
+        public IActionResult OrderHistory(string p_sort)
         {
             Customers cust = new Customers()
             {
@@ -126,12 +126,31 @@ namespace WebUI.Controllers
                 ordervm.Add(new OrderVM()
                 {
                     OrderNumber = item.OrderNum,
-                    //Cost = item.TotalPrice,
+                    Cost = item.TotalPrice,
                     ItemCount = q,
                     Date = item.Date
                 });
 
             }
+            switch (p_sort)
+            {
+                case "date_asc":
+                    ordervm = ordervm.OrderBy(s => s.Date).ToList();
+                    break;
+                case "date_desc":
+                    ordervm = ordervm.OrderByDescending(s => s.Date).ToList();
+                    break;
+                case "price_asc":
+                    ordervm = ordervm.OrderBy(s => s.Cost).ToList();
+                    break;
+                case "price_desc":
+                    ordervm = ordervm.OrderByDescending(s => s.Cost).ToList();
+                    break;
+                default:
+                    ordervm = ordervm.OrderBy(s => s.Cost).ToList();
+                    break;
+            }
+
 
             return View(ordervm);
         }
