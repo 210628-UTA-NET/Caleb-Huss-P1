@@ -75,8 +75,9 @@ namespace WebUI.Controllers
             }
             return View();  
         }
-        public IActionResult Orders(int p_num)
+        public IActionResult Orders(int p_num, string p_sort)
         {
+            ViewBag.StoreNumberOrder = p_num;
             StoreFront newStore = new StoreFront()
             {
                 StoreNumber = p_num
@@ -102,6 +103,24 @@ namespace WebUI.Controllers
                 });
 
             }
+            switch (p_sort)
+            {
+                case "date_asc":
+                    ordervm = ordervm.OrderBy(s => s.Date).ToList();
+                    break;
+                case "date_desc":
+                    ordervm = ordervm.OrderByDescending(s => s.Date).ToList();
+                    break;
+                case "price_asc":
+                    ordervm = ordervm.OrderBy(s => s.Cost).ToList();
+                    break;
+                case "price_desc":
+                    ordervm = ordervm.OrderByDescending(s => s.Cost).ToList();
+                    break;
+                default:
+                    ordervm = ordervm.OrderBy(s => s.Cost).ToList();
+                    break;
+            }
             return View(ordervm);
         }
 
@@ -117,5 +136,7 @@ namespace WebUI.Controllers
 
             return View(lineitemsVM);
         }
+
+
     }
 }
