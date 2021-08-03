@@ -77,5 +77,9 @@ namespace BL
             }
             return _repo.GetCustomer(p_cust);
         }
+        public List<Customers> GetCertainCustomers(Customers p_cust)
+        {
+            return _repo.GetCertainCustomers(p_cust);
+        }
     }
 }
