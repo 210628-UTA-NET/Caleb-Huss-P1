@@ -16,11 +16,13 @@ namespace WebUI.Controllers
         private readonly IStoreBL _storeBL;
         private readonly IInventoryBL _inventoryBL;
         private readonly IOrderBL _orderBL;
-        public StoreManagerController(IStoreBL p_storeBL, IInventoryBL p_inventoryBL, IOrderBL p_orderBL)
+        private readonly ICustomerBL _customerBL;
+        public StoreManagerController(IStoreBL p_storeBL, IInventoryBL p_inventoryBL, IOrderBL p_orderBL, ICustomerBL p_customerBL)
         {
             _storeBL = p_storeBL;
             _inventoryBL = p_inventoryBL;
             _orderBL = p_orderBL;
+            _customerBL = p_customerBL;
         }
         public IActionResult Index()
         {
@@ -136,7 +138,30 @@ namespace WebUI.Controllers
 
             return View(lineitemsVM);
         }
-
-
+        public IActionResult Customers()
+        {
+            List<Customers> allCusts = _customerBL.GetAllCustomers();
+            List<CustomerVM> allCustsVM = new List<CustomerVM>();
+            foreach (Customers cust in allCusts)
+            {
+                allCustsVM.Add(new CustomerVM(cust));
+            }
+            return View(allCustsVM);
+        }
+        public IActionResult Search()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Search(CustomerVM p_custVM)
+        {
+            List<Customers> foundCusts = _customerBL.GetCertainCustomers(new Customers() { FirstName = p_custVM.FirstName, LastName = p_custVM.LastName });
+            List<CustomerVM> allCustsVM = new List<CustomerVM>();
+            foreach (Customers cust in foundCusts)
+            {
+                allCustsVM.Add(new CustomerVM(cust));
+            }
+            return View("Customers",allCustsVM);
+        }
     }
 }

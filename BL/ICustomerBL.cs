@@ -37,6 +37,8 @@ namespace BL
         /// <returns></returns>
         Boolean CheckCredentials(string p_email, string p_password);
 
+        public List<Customers> GetCertainCustomers(Customers p_cust);
+
 
 
     }

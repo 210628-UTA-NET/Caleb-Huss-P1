@@ -1,0 +1,39 @@
+﻿@model IEnumerable<WebUI.Models.CustomerVM>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h1>Our Customers</h1>
+    <div>
+        @Html.ActionLink("Search for Customer", "Search", new { @style = "color:white", @class = "btn btn-secondary" })
+        @Html.ActionLink("Clear", "Customers", new { @style = "color:white", @class = "btn btn-secondary" })
+    </div>
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Address</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Address)</td>
+                <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+            </tr>
+            }
+        </tbody>
+
+    </table>
+</body>
+</html>
