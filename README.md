@@ -21,9 +21,12 @@ Here goes your awesome project description!
 ## Features
 
 List of features ready and TODOs for future development
-* Awesome feature 1
-* Awesome feature 2
-* Awesome feature 3
+* Allow user to sign in or sign up
+* Display list of stores and get their inventory
+* View order history as a customer
+* View order histoyr of each store
+* Sort order history by date or by price
+* Managers can replenish inventory
 
 To-do list:
 * Wow improvement to be done 1
