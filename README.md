@@ -2,7 +2,7 @@
 
 ## Project Description
 
-Caleb's Root Beer Empire is looking to increase its revenue with the brilliant idea of shopping but online. This brand new app allows our customers to easily view stores and add any of our wonderful products to their cart, customer can also view their order histories and the order information. Our application allows managers to view store orders and update a stores inventory. They can also search up customers by their first or last name.
+Caleb's Root Beer Empire is looking to increase its revenue with the brilliant idea of shopping but online. This brand new app allows our customers to easily view stores and add any of our wonderful products to their cart, customers can also view their order history and previous order details. Our application allows managers to view store orders and update store inventory. They can also search for customers by their first or last name.
 
 ## Technologies Used
 
